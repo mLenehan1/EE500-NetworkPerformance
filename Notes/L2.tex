@@ -1,0 +1,239 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[dutch]{babel}
+\usepackage{amsmath, amssymb}
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+	\section{Modeling and Simulations}
+	\subsection{Modeling}
+	\subsubsection{Need for Modeling: Difficulties}
+	\begin{itemize}
+		\item Understanding and predicting complex systems behaviour
+		\begin{itemize}
+			\item Many properties
+			\item many input parameters
+			\item Various environmental conditions
+			\item Different constraints
+			\item Diverse outputs
+		\end{itemize}
+		\item Building real-life systems during design or for testing
+		\begin{itemize}
+			\item Expensive
+			\item Requires personnel
+			\item Difficult to modify
+			\item Not sure how
+		\end{itemize}
+	\end{itemize}
+
+	\subsubsection{Modeling as a Solution}
+	\begin{itemize}
+		\item Building an abstract representation of the real system
+		\begin{itemize}
+			\item Reduced complexity
+			\item Important characteristics only
+			\item Cheaper
+			\item Highly modifiable
+		\end{itemize}
+	\end{itemize}
+	
+	\subsubsection{Model Definitions}
+	\begin{itemize}
+		\item A representation of a system from a certain point of view
+			and at a certain level of abstraction
+		\begin{itemize}
+			\item CPU of a computer
+		\end{itemize}
+		\item A representation containing the essential features of an
+			object or event in the real world
+		\begin{itemize}
+			\item Airplane, train network, weather system
+		\end{itemize}
+	\end{itemize}
+	\subsubsection{Modeling Definition}
+	\begin{itemize}
+		\item Process of building a model
+		\item Designing and analyzing a representation of a system to
+			study the effect changes to system variables have
+	\end{itemize}
+
+	\subsubsection{Modeling Benefits}
+	\begin{itemize}
+		\item Allows for investigation of the properties of the system
+		\item Enables prediction of future systems behaviour and outputs
+	\end{itemize}
+
+	\subsubsection{Modeling Limitations}
+	\begin{itemize}
+		\item Most models are inherently inexact (due to the
+			simplifications and assumptions made)
+		\item Accuracy is limited as:
+		\begin{itemize}
+			\item Most parameters and equations used only estimate
+				the real world situation
+			\item Initial conditions are not known
+			\item Environment influence is either ignored or limited
+		\end{itemize}
+	\end{itemize}
+	
+	\subsubsection{Simulation Definition}
+	\begin{itemize}
+		\item Process of performing experiments using a model in order
+			to determine the outcome
+	\end{itemize}
+
+	\subsubsection{Analysis Definition}
+	\begin{itemize}
+		\item Processing and interpreting the results of experiments in
+			order to draw conclusions
+	\end{itemize}
+
+	\subsubsection{Studying a System}
+	\begin{itemize}
+		\item Experiments with the actual system
+		\item Experiments with a model of the system
+		\begin{itemize}
+			\item Prototyping
+			\item Modeling
+			\begin{itemize}
+				\item Mathematical modeling
+				\item Modeling and Simulation
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+
+	\subsubsection{Model Types}
+	\begin{itemize}
+		\item Deterministic or Stochastic
+		\begin{itemize}
+			\item Deterministic: all variables are deterministic
+			\item Stochastic: Some model variables or behaviours are
+				random
+		\end{itemize}
+		\item Static or Dynamic:
+		\begin{itemize}
+			\item Static: the model does not change in time
+			\item Dynamic the model is modified in time
+		\end{itemize}
+		\item Continuous or Discrete:
+		\begin{itemize}
+			\item Continuous: the system state evolves continuously
+			\item Discrete: the system state changes at discrete points in
+			time
+		\end{itemize}
+	\end{itemize}
+
+	\subsubsection{Stages in Modeling - Take A}
+	\begin{itemize}
+		\item Simplification and Abstraction
+		\begin{itemize}
+			\item A model contains essential characteristics of
+				real-life objects or events
+			\item This stage identifies relevant features of real
+				system to be modeled
+			\item Assumptions are made
+			\item Input parameters are determined
+			\item Output measures are listed
+		\end{itemize}
+		\item Representation and Measurements
+		\begin{itemize}
+			\item Object, events, numbers and relationships in the
+				real system are associated model components
+		\end{itemize}
+		\item Manipulation
+		\begin{itemize}
+			\item Implementation of real world objects and
+				relationships are determined
+			\item New objects and relationships are represented
+		\end{itemize}
+		\item Verification
+		\begin{itemize}
+			\item Outcomes from the model are compared with real
+				world outcomes
+			\item It is determined if the model is adequate for the
+				desired purpose
+		\end{itemize}
+	\end{itemize}
+	
+	\subsubsection{Stages in Modeling - Take B}
+	\begin{itemize}
+		\item Determine the goals and objectives
+		\begin{itemize}
+			\item Level of abstraction
+			\item Relevant features to be modelled
+			\item Required input and expected output
+		\end{itemize}
+		\item Build a conceptual model
+		\begin{itemize}
+			\item Very high level
+			\item Determines how comprehensive the model will be
+			\item Determines state variables if they are dynamic,
+				how important they are etc.
+		\end{itemize}
+		\item Create the specification model
+		\begin{itemize}
+			\item Average detailed level
+			\item May involve equations, pseudocode, etc.
+			\item Indicates input and output
+		\end{itemize}
+		\item Convert into a computational model
+		\begin{itemize}
+			\item Low detail level
+			\item Involves a general purpose or a simulation
+				programming language
+			\item It is the actual useful model
+		\end{itemize}
+		\item Verification and validation
+		\begin{itemize}
+			\item Verification
+			\begin{itemize}
+				\item Did we build the model right? According to
+					Specification
+			\end{itemize}
+			\item Validation:
+			\begin{itemize}
+				\item Did we build the right model? Relative to
+					the real system
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+
+	\subsection{Simulation}
+	\subsubsection{Network Simulators}
+	\begin{itemize}
+		\item Network Simulator V2
+		\begin{itemize}
+			\item Discrete event simulator
+			\item Includes many models for protocols at various
+				network layers:
+			\begin{itemize}
+				\item TCP UDP RTP
+				\item FTP CBR VBR
+			\end{itemize}
+		\item Support for wired and wireless delivery
+		\item Extended by many reasearchers worldwide
+		\end{itemize}
+		\item Network Simulator version 3
+		\begin{itemize}
+			\item Discrete event simulator
+			\item Includes increasing number of different protocols
+			\item Support for wired and wireless delivery
+		\end{itemize}
+	\end{itemize}
+\end{document}

@@ -1,0 +1,367 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[dutch]{babel}
+\usepackage{amsmath, amssymb}
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\section{Introduction}
+\subsection{Current Environment}
+\begin{itemize}
+	\item Cause:
+	\begin{itemize}
+		\item Advances in mobbile devices, easy to use, affordable and
+			powerful
+		\item People can connect to Internet anytime, anywhere
+		\item Popularity of video-sharing websites
+	\end{itemize}
+	\item Effect:
+	\begin{itemize}
+		\item Mobile users demands increasing
+		\item Exponential growth in video traffic
+		\item Explosion in data traffic
+	\end{itemize}
+	\item Problems:
+	\begin{itemize}
+		\item Application requirements
+		\item Multiple Device Types
+		\item Different technologies
+		\item Different User preferences (cost, energy, quality)
+	\end{itemize}
+	\item Solution
+	\begin{itemize}
+		\item Coexistence of multiple technologies
+		\item Deployment of different radio access technologies in
+			overlapping areas
+		\item Accomodate more and more subscribers
+	\end{itemize}
+	\item Challenges:
+	\begin{itemize}
+		\item Offer always best connectivity to the interet for mobile
+			users
+		\item Ne on best availabel radio access network
+		\item Network optimization especially for video traffic
+		\item Provide continuous and smooth video streaming, minimal
+			delay, jitter, and packet loss
+		\item Avoid degredation in video quality and user experience
+	\end{itemize}
+\end{itemize}
+\subsection{What is QoS?}
+\begin{itemize}
+	\item What is quality?
+	\begin{itemize}
+		\item "The totality of characteristics of an entity that bear on
+			its abuility to satisfy states and implied needs" ISO
+			8402
+		\item "Degree to which a set of inherent characteristics fulfils
+			requirements" ISO 9000
+	\end{itemize}
+	\item What is QoS?
+	\begin{itemize}
+		\item A subset of overall quality
+		\item "The collective effect of service performance which
+			determine the degree of satisfaction of a user of the
+			service" ITU-T Rec. E.800
+	\end{itemize}
+\end{itemize}
+
+\section{Service Level Agreement}
+\begin{itemize}
+	\item Contract between ISP and Client
+	\item ISP gives guarantees for delivery of service
+	\item Service Level Objectives (SLO)
+	\begin{itemize}
+		\item Goals needed to be met for service
+		\item Used to specify QoS desired
+	\end{itemize}
+	\item Service Level Guarantees (SLG)
+	\begin{itemize}
+		\item Promise to meet SLOs
+	\end{itemize}
+	\item Service Level Managements (SLM)
+	\begin{itemize}
+		\item Approach of ISP for operation and delivery of services
+		\item Integrated management of functionalities in SLA life cycle
+	\end{itemize}
+\end{itemize}
+\subsection{Service Level Objectives}
+\begin{itemize}
+	\item QoS Parameters
+	\begin{itemize}
+		\item Instance to represent QoS to customers
+		\item Different according to type of service
+	\end{itemize}
+	\item Generic QoS params required in network service:
+	\begin{itemize}
+		\item Availability, Delivery, Latency, Bandwidth, MTBF (Mean
+			Time Between Failures), MTTR (Mean Time to Recover)
+	\end{itemize}
+\end{itemize}
+\subsubsection{QoS Parameters}
+\begin{itemize}
+	\item Availability
+	\begin{itemize}
+		\item $\%$ of feasibility of service in every service request
+		\item key parameter for customers
+	\end{itemize}
+\item Delivery
+	\begin{itemize}
+		\item Converse of packet loss
+		\item $\%$ of each service delivered without packet loss
+	\end{itemize}
+\item Latency
+	\begin{itemize}
+		\item $\delta t$ packet to travel from service access point
+			(SAP) to target and back
+		\item includes transport t and queuing delay
+	\end{itemize}
+\item Bandwidth
+	\begin{itemize}
+		\item Used/Available capacity - Stated in SLA
+	\end{itemize}
+\item MTBF - Mean Time Between Failure
+\item MTTR - Mean Time To Recover
+	\begin{itemize}
+		\item Avg. t device/sys takes to recover from failure
+	\end{itemize}
+\end{itemize}
+\subsection{Service Level Guarantees}
+\subsubsection{Customer requirements of QoS}
+\begin{itemize}
+	\item Focus on user-percieved effects
+	\item Not depend on assumptions of internal net design
+	\item Take into account all aspects of service from cusomers PoV
+	\item Assured to user by ISP
+	\item Described in net-independent terms, creates common lang.
+		understandable by both user and ISP
+	\begin{itemize}
+		\item ITU-TG.1010
+	\end{itemize}
+\end{itemize}
+\subsubsection{QoS Offered by the Service Provider}
+\begin{itemize}
+	\item QoS metrics for web browsing
+	\item Requirements:
+	\begin{itemize}
+		\item Mainly influenced by response time (!> 5s)
+		\item Delay $<400ms$ expected for best effort net traffic
+		\item Jitter not applicable to HTTP
+		\begin{itemize}
+			\item Little impact on txt/picture web browsing
+		\end{itemize}
+		\item Data rate \amp required b.w. $<30.5kbps$ 
+		\item Expected loss rate \amp error rate 0 since HTTP is
+			reliable
+		\begin{itemize}
+			\item Error reTX
+		\end{itemize}
+	\end{itemize}
+	\item QoS Metrics for Video
+	\begin{itemize}
+		\item Under diff. codec tech and quality req. diff. req. for net
+			TX
+		\item VCR quality MPEG-1 stream:
+		\begin{itemize}
+			\item B.W $1.2-1.5Mbps$ 
+			\item Jitter recommended $<100ms$ for broadcast quality
+			\item Residual bit error rate $<10^5$ for broadcast
+				quality stream using compressed format
+			\item Loss/Error rates $<10^5$
+		\end{itemize}
+		\item HDTV quality MPEG-2 video streams:
+		\begin{itemize}
+			\item B.W $40Mbps$ 
+			\item Jitter $<50ms$ for HDTV quality
+			\item Residual bit error rate $<10^6$ for HDTV quality
+				stream using compressed format
+			\item Loss/Error rate $<10^6$
+		\end{itemize}
+		\item MPEG-4 video streams:
+		\begin{itemize}
+			\item B.W $28.8-500kbps$ 
+			\item Jitter $<150ms$ due to lower quality req.
+			\item MPEG-4 has higher comp. rate, $\therefore$ less
+				residual error
+			\item Loss/Error rate $<10^5$
+		\end{itemize}
+	\end{itemize}
+	\item Statement of level of quality actually achieved and delivered to
+		customer
+	\item should be same as offered QoS
+	\begin{itemize}
+		\item Determine what was actually achieved to asses level of
+			performance achieved		
+	\end{itemize}
+	\item Performance figures summarised for specified periods of time
+\end{itemize}
+\subsubection{QoS Percieved by Customer}
+\begin{itemize}
+	\item Statement expressing level of quality exp.
+	\item Perceived QoS - Degrees of Satisfaction, not in tech. terms
+	\item Mean Opinion Score (MOS) specified by ITU-T Rec. P.800
+\end{itemize}
+\subsection{Service Level Management Functions}
+\begin{itemize}
+	\item SLM categorized into seven functions:
+	\begin{itemize}
+		\item SLA creation
+		\begin{itemize}
+			\item Create SLA template for specified services
+		\end{itemize}
+		\item SLA Negotiation
+		\begin{itemize}
+			\item Selecting applicable QoS params. in SLA
+			\item Negotiating penalty in case of SLA violation
+		\end{itemize}
+		\item SLA Provisioning
+		\begin{itemize}
+			\item SP configure the network element/topology to
+				provide service
+		\end{itemize}
+		\item SLA Monitorimg
+		\begin{itemize}
+			\item SP must verify degree of SLA assurance
+			\item Perform surveillance on QoS parameter
+				degredation/violation
+		\end{itemize}
+		\item SLA Maintenance
+		\begin{itemize}
+			\item  In case of QoS violation, analyses readon why
+				degredation has occured, which params. degraded
+			\item Notifies SLA provisioning to restore service
+		\end{itemize}
+		\item SLA Reporting
+		\begin{itemize}
+			\item Provides performance info to customers,
+				periodically or on-demand
+		\end{itemize}
+		\item SLA Assessment
+		\begin{itemize}
+			\item Demands payments to customers
+			\item Accommodates customers with penalty when violation
+				occurs
+		\end{itemize}
+	\end{itemize}
+	\item SLA provisioning and monitoring most important in net management
+		layer
+\end{itemize}
+\subsubsection{SLA Monitoruing}
+\begin{itemize}
+	\item Input
+	\begin{itemize}
+		\item QoS Parameters
+		\item SLA Contract
+	\end{itemize}
+	\item SLA Monitoring
+	\item Output
+	\begin{itemize}
+		\item Problem Notification
+		\item Performance
+	\end{itemize}
+\end{itemize}
+\section{Network Performance Metrics}
+\begin{itemize}
+	\item Network Performance Metric (NPM)
+	\begin{itemize}
+		\item Basic metric of performance metric in net management layer
+	\end{itemize}
+	\item Four Types:
+	\begin{itemize}
+		\item Availability:
+		\begin{itemize}
+			\item $\%$ spec. t interval in which sys was available
+				for normal use
+			\item What is supposed to be available?
+			\begin{itemize}
+				\item Service, Host, Network
+			\end{itemize}
+			\item Reported as single monthly figure
+			\begin{itemize}
+				\item $99.99\%$ means service is unavailable for
+					4 minutes during a month
+			\end{itemize}
+			\item Test by sending syutable packets, observing
+				answering packets (latency, packet loss)
+			\item Metrics:
+			\begin{itemize}
+				\item Connectivity: Physical connectivity of
+					network elements
+				\item Functionality: Whether associated sys
+					works well or not
+			\end{itemize}
+		\end{itemize}
+		\item Loss:
+		\begin{itemize}
+			\item Fraction of packets list in transit from host to
+				another during specified t.
+			\item Packet transport works on best-effort basis
+			\item Moderate level of packet loss not in itself
+				tolerable
+			\begin{itemize}
+				\item Some real-time services can tolerate some
+					losses e.g. VoIP
+				\item TCP resends lost packets at slower rate
+			\end{itemize}
+			\item Metrics:
+			\begin{itemize}
+				\item One way loss
+				\item Round Trip (RT) Loss
+			\end{itemize}
+		\end{itemize}
+		\item Delay:
+		\begin{itemize}
+			\item t taken for pkt to tracel from host to another
+			\item $RT Delay = Forward Transport delay + Server delay
+				+ backward transport delay$ 
+			\item Forward transport delay often \neq backward
+				transport dfelay
+			\item Ping still most commonly used to measure latency
+			\item Delay changes as conditions on net. vary
+			\begin{itemize}
+				\item e.g. Server load, traffic load, router
+					load, routing function
+			\end{itemize}
+			\item For streaming, high delay/jitter (delay variation)
+				can cause degredation on user-perceived QoS
+			\item Metrics
+			\begin{itemize}
+				\item One Way delay
+				\item RT Delay
+				\item Jitter
+			\end{itemize}
+		\end{itemize}
+		\item Utilization:
+		\begin{itemize}
+			\item Throughput for link expressed as $\%$ of access
+				rate
+			\item Throughput:
+			\begin{itemize}
+				\item Rate data is sent through net. (b/s,
+					pkt/s, flows/s)
+			\end{itemize}
+			\item Metrics:
+			\begin{itemize}
+				\item Capacity
+				\item B.W
+				\item Throughput
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\end{document}
