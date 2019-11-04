@@ -1,0 +1,1035 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[dutch]{babel}
+\usepackage{amsmath, amssymb}
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\section{Performance at Lower Network Layers}
+\subsection{Network Layer - Overview}
+Goal:
+\begin{itemize}
+	\item Transports data from src to dest, across multi. hops
+	\item Every major net. component has net. layer concerns
+\end{itemize}
+Design Principles:
+\begin{itemize}
+	\item Services provided by network layershould be indep. of net.
+		topology
+	\item Transport layer should be shielded from member, type and topology
+		of net. components
+	\item Network addresses avail. to the transport layer should use uniform
+		numbering plan
+\end{itemize}
+Service Types:
+\begin{itemize}
+	\item Connectionless
+	\begin{itemize}
+		\item e.g. IP: Internet PRotocol
+	\end{itemize}
+	\item Connection-oriented
+	\begin{itemize}
+		\item ATML Asynch. Transfer Mode Protocol
+	\end{itemize}
+\end{itemize}
+\subsection{Internet}
+\subsubsection{Characteristics}
+\begin{itemize}
+	\item Initial Design
+	\begin{itemize}
+		\item Connection-oriented
+		\item Peer-peer topology
+		\item Circuit swithing-based communication
+		\item e.g. Telegraph and telephone
+	\end{itemize}
+	\item Current Design
+	\begin{itemize}
+		\item Best Effor Service
+		\begin{itemize}
+			\item More appropriate for data transfers
+			\item No RT requirements
+			\item End-points can adapt to net. conditions, if they
+				want/need to
+		\end{itemize}
+		\item Connectionless packet-switching based
+		\begin{itemize}
+			\item Preferred to circuit-switvhing
+			\item No set-up delay
+			\item No blocking (fire and forget, forward if possible,
+				deliver as received)
+			\begin{itemize}
+				\item No guarantee that any data reaches dest.
+			\end{itemize}
+			\item Flex. in TX bit rates
+			\begin{itemize}
+				\item Circuit-switching usually has few
+					pre-determined bit-rates
+			\end{itemize}
+			\item No stable "path"
+			\begin{itemize}
+				\item More reliable (route around problems
+			\end{itemize}
+			\item More efficient use of net. resources when traffic
+				bursty
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsection{IP-based Network Layer}
+\begin{itemize}
+	\item Based on IP
+	\item Connectionless: uses datagram packet switching
+	\item Open design
+	\item Open implementations
+	\item Open standardisations process
+	\item Independent of physical medium
+	\item Scalable: as evidenced by its growth
+	\item Extensible: protocols have evolved over time, as problems arose
+		and/or req. changed
+\end{itemize}
+\subsection{IP Router Architecture}
+\subsubsection{Router Basic Functions}
+\begin{itemize}
+	\item Forwarding
+	\begin{itemize}
+		\item Move pkts from routers input to output port
+	\end{itemize}
+	\item Routing
+	\begin{itemize}
+		\item Determine route taken by pkts from src to dest.
+	\end{itemize}
+	\item Routing Activity (When datalink frame arrives)
+	\begin{itemize}
+		\item Line card applies datalink layer logic to ensure frame is
+			valid and pkt was successfully received
+		\item If pkt arrival rate > routers forwarding cap. pkt queued,
+			waits for processing
+		\item If queue buffers full, pkt discarded
+		\item If space in queue, after waiting, validity check performed
+			on IP header
+		\item If dest address non-local host, routing table lookup
+			performed to determine how to forward pkt.
+		\item Pkts classified into predefined service classes (if
+			defined)
+		\item TTL field decremented, new header checksum computed, pkt
+			sent to approp. output port
+		\item Datalink layer login on output ports line card inserts
+			datalink layer header, TX pkt inside a frame
+		\item If process fails, error msg sent to pkts sender
+	\end{itemize}
+\end{itemize}
+\subsection{Internet Protocol Version 4 (IPV4)}
+\subsubsection{IPv4 Header}
+\begin{itemize}
+	\item Ver indicates IP V num.
+	\item ID is the same for all fragments of given datagram
+	\begin{itemize}
+		\item Fragmentation of a datagram needed when an intermediate
+			net. has a max frame size too small to carry datagram
+	\end{itemize}
+	\item Fragmentation offset indicates place of each fragment in datagram
+	\item Time-to-Live decreased by 1 at each hop
+	\item Options field carrys fields that control routing, timing,
+		management, security, etc.
+	\begin{itemize}
+		\item Padded to a multiple of 4 bytes
+	\end{itemize}
+\end{itemize}
+\subsubsection{IPv4 Address Format}
+\subsubsection{Special IPv4 Addresses}
+Loopback useful for debugging/testing network software as IP pkts with loopback
+addresses are processed by the machine which generated them as if they were
+incoming pkts
+\subsection{Internet PRotocol Version 6 (IPV6)}
+\subsubsection{Motivation}
+\begin{itemize}
+	\item IPv4 Limitations
+	\begin{itemize}
+		\item Limited address space
+		\begin{itemize}
+			\item Despite subnetting, Network Address
+				Translation (NAT)
+			\item Classless Inter-Domain Routing (CIDR)
+		\end{itemize}
+		\item No special tratment for real-time traffic
+		\begin{itemize}
+			\item Despite IPv4 Type of SErvice field which is
+				ignored by routers
+		\end{itemize}
+		\item No wide usage of security issues
+		\begin{itemize}
+			\item Despite IPv4 security ffeatures which are not
+				widely used
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsubsection{Action}
+\begin{itemize}
+	\item In 90s, following an open design process IPv6 was standardised
+\end{itemize}
+\subsubsection{ISsues}
+\begin{itemize}
+	\item IPv6 and v4 not compatible
+	\item IPv6 deployment takes time
+	\begin{itemize}
+		\item Both will coexist for a long time
+	\end{itemize}
+\end{itemize}
+\subsubsection{Features}
+\begin{itemize}
+	\item Increased address space
+	\begin{itemize}
+		\item Uses 128 bit address
+		\item $2^{128}$ addresses
+		\item $5*2^{28}$ addresses for each person on earth
+	\end{itemize}
+	\item Simple pkt header
+	\begin{itemize}
+		\item Routers don't do fragmentation
+		\item No header checksum to be checked
+	\end{itemize}
+	\item Support for more options
+	\begin{itemize}
+		\item e.g. routing, hop-by-hop, fragmentation, etc.
+		\item extension headers can be present
+	\end{itemize}
+	\item Support for per-flow handling and traffic classes
+	\begin{itemize}
+		\item Flows defined by src address, dest addres and flow num.
+	\end{itemize}
+	\item Mandatory authentication and security
+	\begin{itemize}
+		\item Internet Protocol Security (IPsec) was specially developed
+			(then deployed in IPv4)
+	\end{itemize}
+	\item Compatability with existing TCP/IP protocol stack
+	\begin{itemize}
+		\item E.g DNS, TCO, UDP, OSPF, BGP, etc.
+	\end{itemize}
+\end{itemize}
+\subsection{Other Network Layer Protocols}
+\subsubsection{Motivation}
+\begin{itemize}
+	\item IP is in charge with data transport
+	\item IP reqs. support from other transport layer protocols
+	\begin{itemize}
+		\item Control functions (ICMP)
+		\item Multicast signalling (IGMP)
+		\item Routing table setup (TIP, OSPF, BGP, PIM)
+	\end{itemize}
+\end{itemize}
+\subsubsection{ICMP}
+\begin{itemize}
+	\item Internet Control Message PRotocol facilitates:
+	\begin{itemize}
+		\item Error reporting
+		\item Simple Queries
+	\end{itemize}
+	\item ICMP msgs. carried by IP datagrams
+\end{itemize}
+\subsection{Internet Control Message Protocol (ICMP)}
+\subsubsection{ICMP Message Format}
+\begin{itemize}
+	\item Header (4bytes)
+	\item Fields:
+	\begin{itemize}
+		\item Type (1 byte): msg type
+		\item Code (1 byte): msg subtype
+		\item Checksum (2 bytes): calculated for entire msg
+	\end{itemize}
+	\item Payload (min 4 bytes)
+	\item Content
+	\begin{itemize}
+		\item Related to msg type
+		\item If no data, content includes 4 bytes set to 0
+	\end{itemize}
+	\item Note:
+	\begin{itemize}
+		\item ICMP msgs have min. length of 8 byte
+	\end{itemize}
+\end{itemize}
+\subsubsection{ICMP Message Types}
+\begin{itemize}
+	\item Query
+	\begin{itemize}
+		\item Request-reply
+		\item e.g. Echo request, echo reply, timestamp request,
+			timestamp reply, router solicitation, router
+			advertisement
+	\end{itemize}
+	\item Error reporting
+	\begin{itemize}
+		\item Informs about error in transporting data
+		\item Sent by routers to hosts or routers
+		\item Processed at higher layers (e.g. application)
+	\end{itemize}
+\end{itemize}
+\subsection{Routing Algorithms}
+\begin{itemize}
+	\item Definition
+	\begin{itemize}
+		\item Determine route taken by pkts from src to dest
+	\end{itemize}
+	\item Desirable Properties
+	\begin{itemize}
+		\item Correctness
+		\item Simplicity
+		\item Efficiency
+		\item Robustness
+		\item Stability - Routing alg. reaches equilibrium in reasonable
+			time
+		\item Fairness
+		\item Optimality
+	\end{itemize}
+	\item Least-Cost Routing
+	\begin{itemize}
+		\item Cost - A value assigned to each link in the net.
+		\item Cost of a route - Sum of values of all routes links
+		\item BEst route - Route with lowest cost
+	\end{itemize}
+	\item Meaning of cost
+	\begin{itemize}
+		\item 1 for each link - best route = fewest hops
+		\item Financial cost of using link - best is cheapest route
+		\item delau on link - bes is min.-delay route
+		\item pkt tx time on link - best is max.-bw route
+		\item Some comb. of these
+	\end{itemize}
+	\item Pkt fprwarding
+	\begin{itemize}
+		\item Towards the best route
+	\end{itemize}
+\end{itemize}
+\subsubsection{Types}
+\begin{itemize}
+	\item Non-adaptive or Static
+	\begin{itemize}
+		\item Routing decisions pre-determined, not based on
+			measurements (or estimates) of current net. topology and
+			traffic load
+	\end{itemize}
+	\item Adaptive
+	\begin{itemize}
+		\item routing decisions may be changed when net. topology and/or
+			trafic load change
+		\begin{itemize}
+			\item Extreme case: select new route for each pkt
+			\item May get info from neighbouring routers, or from
+				net. routers
+			\item Routes are changed
+			\begin{itemize}
+				\item Periodically
+				\item When topology changes
+				\item When traffic load changes significantly
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	\item Centralised
+	\begin{itemize}
+		\item Routing decisions taken in centralised manner for whole
+			network
+	\end{itemize}
+	\item Distributed
+	\begin{itemize}
+		\item Routing decisions taken separately by each router,
+			independent from neightbours
+	\end{itemize}
+\end{itemize}
+\subsubsection{Decentralised Routing Algorithm}
+	\begin{itemize}
+		\item Distance-vecor
+		\begin{itemize}
+			\item Each router exchanges info about entire net. with
+				neighbour routers at regular intervals
+			\item Neighbour - connected by direct link
+			\item Regular interval - every 30 seconds
+		\end{itemize}
+		\item Link-state
+		\begin{itemize}
+			\item Each router exchanges info about neighbourhood
+				with all routers in net. when there is a change
+				in the topology
+			\item Neighbourhood of router - set of neighbour routers
+			\item each routers neighbourhood info is flooded through
+				the net.
+			\item Change in topology occurs hwen:
+			\begin{itemize}
+				\item Neighbouring router not accessibe anymore
+				\item New router has been added
+			\end{itemize}
+		\end{itemize}
+		\item Note
+		\begin{itemize}
+			\item Link state algorithm converges faster and
+				therefore more widely used
+		\end{itemize}
+	\end{itemize}
+\subsection{Distance Vector Routing}
+Principle
+\begin{itemize}
+	\item Assume several LANS represented by "clouds" and routers/gateways
+		by "boxes"
+	\item Num. in each cloud represents net. ID
+	\item Letter in each box represents router (or gateway) names
+	\item Every router sends its info to its neighbours
+	\item Each neighbor router adds this info to its own and send to its
+		neighbours
+	\item In time all routers learn about the net. struct.
+	\item Each router stores info. about the net. in its routing able
+	\item Routing table includes
+	\begin{itemize}
+		\item Net. ID = final pkt dest
+		\item Cost = Num of hops from this router to final dest.
+		\item Next hop = neighbouring router to which pkt should be sent
+	\end{itemize}
+	\item Initially each router knows net IDs of the net. to which it is
+		directly connected only
+\end{itemize}
+\subsubsection{Router Table Update}
+\begin{itemize}
+	\item Distributed Bellman-Ford Algorithm
+	\begin{itemize}
+		\item Add 1 to cost of each incoming route (each neighbour 1 hop
+			away)
+		\item If new dest learned, add its info to routing table
+		\item If new info received about existing dest.
+		\begin{itemize}
+			\item If next hop field is same, replace existing entry
+				with new info even if cost is greater
+			\item If next hop field not same, replace existing entry
+				with new info if cost is lower
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsection{Link-State Routing}
+Principle
+\begin{itemize}
+	\item Each router sends info about is neighbourhood to every other
+		router
+	\item Each router updates its info about the net. based on info received
+	\item In time, all routers learn about net. struct
+	\item Makes use of link costs (usually a weighted sum of various factors
+	\begin{itemize}
+		\item e.g. traffic level, security level, pkt delay
+	\end{itemize}
+	\item Link cost is from router to net. connecting it to another router
+	\begin{itemize}
+		\item When pkt sent in LAN, every node - including router - can
+			receive it
+		\item No cost assigned when going from a net. to router
+	\end{itemize}
+\end{itemize}
+Routing tables
+\begin{itemize}
+	\item All routers get their info about their neighbourhood by sending
+		short echo pkts to their neighbours, monitoring response
+	\item All routers share info about their neighbours by sending
+		link-state pkts to all routers in network (flooding)
+	\item Pkts include
+	\begin{itemize}
+		\item Advertiser: sending reouter ID
+		\item Network: Dest. network ID
+		\item Cost: Link cost to neighbour
+		\item Neighbour: Neighbour router ID
+	\end{itemize}
+	\item Every router prepares a link-state pkt and floods it through the
+		net.
+	\item When router receives all these pkts. it can save the data in a
+		link-state DB
+	\item Assuming that every router receives same pkts, same content will
+		be found in all link-state DBs
+	\item Using info from DB, each router can fill it's routing table
+\end{itemize}
+\subsubsection{Dijkstra's Shortest Path Algorithm}
+\begin{itemize}
+	\item ID all link costs in net. either from link-state DB, or using fact
+		that cost of any link from a network to a router is 0
+	\item Build shortest-path spanning tree for router running the alg.
+	\begin{itemize}
+		\item Tree has route from router to all possible dest. and no
+			loops
+	\end{itemize}
+	\item Router is root of its shortest-path spanning tree
+	\item Node either a net. or a router: nodes connected by arcs
+	\item Algorithm keeps track of 2 sets of nodes and arcs, Temp. and Perm.
+	\item Initially router is in Perm. set and Temp. set contains all
+		neighbour nodes of router itseld, arcs connecting them to
+		router
+	\item Identify Temp. node whose arc has lowest cumulative cost from
+		root: move to Perm set
+	\item All nodes connected to new PErm node and not already in Temp. set
+		along with their arcs, moved to Temp.
+	\item Any node already in Temo set has lower cumulative cost reom root
+		by using a route passing through the new Perm node, this new
+		route replaces the existing one
+	\item Repeat until all nodes and arcs are in Perm set
+	\item NoteL even if all routers link-state DBs are identical, tree
+		determined by routers are different
+\end{itemize}
+\subsubsection{Building the Routing Table}
+\begin{itemize}
+	\item Once a router has found its shortest-path spanning tree it can
+		build its routing table
+	\item In large net. memory required to store the link-state DB and the
+		computation time to calc. the link-state routing table can be
+		significant
+	\item In practice, since link-state pkt receptions not synchronised,
+		routers may be using different link-state DBs to build their
+		routing tables
+	\item Result accuracy depends on how different the various routers DB
+		content is
+\end{itemize}
+\subsection{Routing in the Internet}
+\subsubsection{Centralised Routing}
+\begin{itemize}
+	\item Initially Internet buiilt around Core system which enabled
+		interconnectivity via core gateways
+	\item Routing info collected, exchanged between core Gateways using
+		Gateway-Gateway protocol
+	\item Routing data processed by Core and result were distrib. back to
+		external routers
+	\item Major weakness of model - Scalability and vulnerability
+\end{itemize}
+\subsubsection{Decentralised routing}
+\begin{itemize}
+	\item Internet build as a set of hierarchical inter-connected
+		independent network groups known as Autonomous systems (AS)
+	\item Two level routing
+	\begin{itemize}
+		\item Intra-AS: each AS responsibe for own routing
+		\begin{itemize}
+			\item Major protocols used in practice
+			\item Routing Info Protocol (RIP) - based on distance
+				vector alg.
+			\item Open Shortest Path First (OSPF) - based on
+				link-states alg.
+		\end{itemize}
+		\item Inter-AS: enables routing between AS
+		\begin{itemize}
+			\item Major protocol used in practice
+			\item Border Gateway Protocol
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsection{Multicast Routing}
+\begin{itemize}
+	\item Definition
+	\begin{itemize}
+		\item Delivery of a copy of a packet to a group of receivers
+	\end{itemize}
+	\item Types
+	\begin{itemize}
+		\item Multicast unicast
+		\begin{itemize}
+			\item Mult. pkts travel from src to each dest.
+		\end{itemize}
+		\item Multicast
+		\begin{itemize}
+			\item Single pktstravel on common routes
+		\end{itemize}
+	\end{itemize}
+	\item Multicast in practice
+	\begin{itemize}
+		\item Requires multicast addresses for multicast groups
+		\begin{itemize}
+			\item Start with "10" in binary
+		\end{itemize}
+		\item Requires multicast enabled routers
+		\begin{itemize}
+			\item Maintain and pass lsit of addresses assoc. with
+				multicast group address
+		\end{itemize}
+		\item Requires multicast routing protocols
+		\begin{itemize}
+			\item Distance vector mulicast routing protocols
+			\item Multicast open shortest path first protocol
+		\end{itemize}
+		\item Requires multicast routers to know about their own
+			multicast groups
+		\begin{itemize}
+			\item Internet Group Management Protocol
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsection{Performance Issues}
+\subsubsection{Distance-Vector Routings count-to-infinity problems}
+\begin{itemize}
+	\item Slow convergence in some conditions
+	\item Slow reaction to link/router failure as info travels in small
+		steps
+	\item Many ad-hoc solns. have been tried, but either also fail to solve
+		count-to-infinity problem or are hard to implement
+\end{itemize}
+\subsubsection{Link-State Routing Performance}
+\begin{itemize}
+	\item Link costs can be configured in OSPF (hop, reliability, delay,
+		cost, bw)
+	\item Large mam. req.
+	\item Dijkstra alg. computations are highly processor intensive
+	\item High BW req. if network topology changes often
+\end{itemize}
+\subsubsection{Need for Intra- Inter-AS routing}
+\begin{itemize}
+	\item Policy
+	\begin{itemize}
+		\item Inter-AS: Concerned with policies
+		\item Intra-AS: Under same admin, control so policy is less
+			important
+	\end{itemize}
+	\item Scalability
+		\begin{itemize}
+			\item Inter-AS: Scale for routing among large num. of
+				net.
+			\item Intra-AS: Scalability less of a concern
+		\end{itemize}
+	\item Performance
+	\begin{itemize}
+		\item Inter-AS: difficult to focus on performance metrics
+		\item Intra-AS: highly focused on performance metrics and costs
+	\end{itemize}
+\end{itemize}
+\subsection{Wireless Routing PRotocols}
+\subsubsection{Classification}
+\begin{itemize}
+	\item Topology-Based Routing
+	\begin{itemize}
+		\item Table-Driven (proactive)
+		\item On-Deman (Reactive)
+		\item Hierarchical Routing
+	\end{itemize}
+	\item Location-based routing
+	\begin{itemize}
+		\item Greedy Routing
+	\end{itemize}
+\end{itemize}
+\subsubsection{Table-Driven (Proactive) Routing}
+\begin{itemize}
+	\item Based on distance-vector and link-state protocols
+	\item Nodes maintain routes to other nodes
+	\item Periodic or event triggered route updates
+	\item Relatively low latency, routes known in advanfe
+	\item Higher overhead and longer route convergence
+\end{itemize}
+\subsubsection{On-Demand (Reactive) Routing}
+\begin{itemize}
+	\item Src node inits routing discovery on demand
+	\item Only active routes maintained
+	\item Relative reduced routing overhead
+	\item Long delays when new routes fount
+\end{itemize}
+\subsubsection{Hierarchical Routing}
+\begin{itemize}
+	\item Net. divided into clusters
+	\item Nodes talk to cluster head only
+	\item Better scalability (descreases routing overhead), unfair use of
+		resoutces
+\end{itemize}
+\subsubsection{Location-Based (Geographic Routing}
+\begin{itemize}
+	\item Routing performed according to position of node
+	\item Routing overhead can be small but optimal routing may not be found
+\end{itemize}
+\subsubsection{Destination Sequenced Distance Vector (DSDV)}
+\begin{itemize}
+	\item Proactive routing protocol
+	\item Each node maintains routing table with entries for each node in
+		net.
+	\begin{itemize}
+		\item dest addr, seq num., next-hop, hop-count)
+	\end{itemize}
+	\item Nodes transmit pkts according to routing table
+	\item Each node has seq num, updated when routing info changes (new node
+		joins, line break)
+	\begin{itemize}
+		\item Used to avoid routing loops
+	\end{itemize}
+	\item Each node periodically broadcasts routing table updates
+\end{itemize}
+\subsubsection{Dynamic Source Routing (DSR)}
+\begin{itemize}
+	\item Reactive protocol
+	\item Srv wamts tp TX, does not know route to dest, inits route
+		discovery
+	\item Route request pkt broadcast, once dest receives, send back route
+		reply, in pkt header ID's each forwarding hop in next node field
+	\item Entire route stored in pkt headers
+	\item At nodfes, route cache used to store most recent routes
+\end{itemize}
+\subsubsection{Ad Hoc On-Demand Distance Vector (AODV)}
+\begin{itemize}
+	\item Essentially combo of DSR and DSDV
+	\item DSRs on-demand mechanisms for route discovery and route
+		maintenance
+	\item Uses DSDVs table of precursor, next hop for each route during
+		hop-by-hop routing and sequence numbers (to prevent loops)
+	\item Improve DSR by keeping routing tables at nodes (pkts do not
+		contain entire route)
+	\item Routing table entries have lifetime in contreast to DSR cache
+\end{itemize}
+\subsubsection{Temporally-Ordered Routing Algorithm (TORA)}
+\begin{itemize}
+	\item Adaptive routing protovol for muli-hop net.
+	\item Designed to min comms overhead via localization of algorighmic
+		reaction to topological changes (distribd execution)
+	\item Uses directed acyclic graphs instead of shortest path soln
+	\item Each node assigned unique height, pkts flow from high noes to low
+		nodes along path towards dest.
+\end{itemize}
+\subsection{Performance Issues}
+\subsubsection{Throughput}
+\begin{itemize}
+	\item Throughput of DSDV decreases drastically with increases in
+		mobnility. DSR outperforms all other protocols
+\end{itemize}
+\subsubsection{Overhead}
+\begin{itemize}
+	\item In general routing overhead increases with mobility (topology
+		changes)
+	\item For DSR overhead dependent on num of diff. routes
+	\item For DSDV overhead higher as routing tables need to be maintained
+\end{itemize}
+\subsubsection{Delay}
+\begin{itemize}
+	\item DSDV delay lowest, constant (see routing tables)
+	\item DSR high delay (see reactive protocols)
+	\item TORA highest delay (see short-lived and long lived loops)
+\end{itemize}
+\subsubsection{Optimality}
+\begin{itemize}
+	\item DSDV and DSR find optimal paths
+	\item TORA and AODV use suboptimal paths even under low mobility
+\end{itemize}
+\subsection{Quality of Service Support}
+\subsubsection{Buffering}
+\begin{itemize}
+	\item Significant traffic burstiness when Tx over net.
+	\item Buffering reduces loss, enables control over Tx rate
+\end{itemize}
+\subsubsection{Packet Scheduling}
+\begin{itemize}
+	\item Enables selection of packets for differentiated Tx
+	\item Arrival based: First in First Out (FIFO), Last In First Out (LIFO)
+	\item Priority based: Src or pkts have different priority
+	\item Weight based: Weighted Fair Queueing (WFQ)
+\end{itemize}
+\subsubsection{Traffic Shaping}
+\begin{itemize}
+	\item Controls flow of data
+	\item Time-based: Leaky bucket alg
+	\item Token-based: Token bucket alg
+\end{itemize}
+\subsubsection{Admission Control}
+\begin{itemize}
+	\item Enables access if certain performance metrics are met
+	\item Otherwise refuses admission
+	\item Maintains certain level of performance e.g. quiality
+\end{itemize}
+\subsection{Traffic Engineering}
+\subsubsection{Motivation}
+\begin{itemize}
+	\item Network traffic highly dynamic
+	\item Network resources variable
+	\item No network control
+	\item No guaranteed QoS
+	\item No efficient use of network resources
+	\item No guaranteed security, reliability, resilience, etc.
+\end{itemize}
+\subsubsection{Definition}
+\begin{itemize}
+	\item TE is concerned with optimizing performance of telecomms network
+		by dynamically analyzing, predicting, and regulating the bhavour
+		of dat TX over that network
+\end{itemize}
+\subsubsection{Goal}
+\begin{itemize}
+	\item Optimisation in terms of efficiency (i,e, costs and quality)
+\end{itemize}
+\subsubsection{Major Solutions}
+\begin{itemize}
+	\item Intergrated Services
+	\begin{itemize}
+		\item Focus on providing QoS delivery guarantees per-flow (using
+			resource reservation: RSVP)
+		\item Concerns on: complexity, scalabity, business model, etc.
+	\end{itemize}
+	\item Differentiated Services
+	\begin{itemize}
+		\item Focus on providing QoS support per-class
+		\item Routers on the network differentiate traffic treatment
+			based on it's class, ensuring preferential treatment for
+			higher priority traffic
+		\item No advance setup, no reservation, no negotiations for each
+			flow, easier to implement
+	\end{itemize}
+	\item Other solutions: MLPS
+\end{itemize}
+\subsection{Performance of Datalink and Physical Network Layers}
+\begin{itemize}
+	\item Wireless PANs (BT - IEEE802.15)
+	\begin{itemize}
+		\item v. low range
+		\item wireless connection to printers etc
+	\end{itemize}
+	\item Wireless LANs (WiFi - IEEE 802.11)
+	\begin{itemize}
+		\item Infrastructure as well as ad-hoc net. possible
+		\item Home/office net.
+	\end{itemize}
+	\item Wireless MANs (WiMAX - IEEE 802.16)
+	\begin{itemize}
+		\item Large scale network
+		\item Base station-based infrastructure
+	\end{itemize}
+\end{itemize}
+\subsection{WiMax IEEE 802.16}
+\begin{itemize}
+	\item Group formed in 98
+	\item Standards
+	\begin{itemize}
+		\item Air-interface for wireless broadband
+		\item Line of Sight comms
+		\item Ooperates in 10-66GHz range
+	\end{itemize}
+	\item 802,16a amendment
+	\begin{itemize}
+		\item Included Non LOS version in 2-11 GHz freq. band
+		\item PHY layer uses orthogonal freq. division multiplexing
+		\item MAC layer supports Orthogonal Frequency Division Multiple
+			Access
+	\end{itemize}
+	\item 802.16d
+	\begin{itemize}
+		\item Further amended standard
+		\item Formed basis for first WiMax soluions
+	\end{itemize}
+        \item Above standards supported fixed wireless applications
+	\begin{itemize}
+		\item No mobility support
+	\end{itemize}
+	\item 802.16e - 2005
+	\begin{itemize}
+		\item added support for mobility and improved performance
+		\item Enable soft and hard handover between base stations
+		\item Introduce scalable OFDMA
+		\begin{itemize}
+			\item Enables higher sppectrum efficiency in wide
+				channels
+			\item Cosst reduction in narrow channels
+		\end{itemize}
+		\item Improces coverage using
+		\begin{itemize}
+			\item Antenna diversity schemes
+			\item Hybrid ARQ (hARQ)
+		\end{itemize}
+		\item Improving capacity and coverage using
+		\begin{itemize}
+			\item Adaptive Antenna Systes (AAS)
+			\item Multiple Input Multiple Output(MIMO) tech
+		\end{itemize}
+		\item Into'd high performance coding techniques to enhance
+			security and NLOS performance
+		\begin{itemize}
+			\item Turbo coding
+			\item Low density parity check
+		\end{itemize}
+		\item Intro's downlink sub-channelization alling admins trade
+			coverage for capacity or vice versa
+		\item Increases resistance to multipath interference using
+			enhances FFT alg. which can tolerate larger delay
+			spreads
+		\item Adds extra QoS classs (enhanced rtPS) more appropriate for
+			VoIP apps
+	\end{itemize}
+\end{itemize}
+\subsection{WiMax 802.16e Service Classes}
+\subsubsection{Unsolicited Grant Service (UGS)}
+\begin{itemize}
+	\item Fixed size pkt carried periodically without requiring explicit
+		req. for bw allocation every time. Real-time high bw (T1) CBR
+		applications (e.g. VoIP)
+\end{itemize}
+\subsubsection{Extended Real-Time Poling Service (ertPS)}
+\begin{itemize}
+	\item Newly intro'd scheduling service in 802.16e complement periodic bw
+		allocations with possibilities for mobile stations to req.
+		additional resources during original allocation. Supports
+		applications whose bw req. vary in time (e.g. VoIP, streaming)
+\end{itemize}
+\subsubsection{Real Time Polling Service (rtPS)}
+\begin{itemize}
+	\item Intro'd to support real time services with variable zide data pkts
+		fenerated periodically, such as MPEG video delivery
+		applications. Frequent unicast polling opps are provided such as
+		movile stations can req. bw and satisfy their timing req.
+\end{itemize}
+\subsubsection{Non-Real-Time Polling Service (nrtPS)}
+\begin{itemize}
+	\item Similar with rtPS, unicast polling opps less freqent. Contention
+		based polling can also be used to req. bw resources
+\end{itemize}
+\subsubsection{Best Effort Service (BE)}
+\begin{itemize}
+	\item Designed for services with no strict QoS requirements such as
+		email and web apps. Mobile stations use contention based polling
+		to request resources
+\end{itemize}
+\subsection{WiFi IEEE 802.11}
+\begin{itemize}
+	\item First std published in 97 for WLAN comms
+	\item Since, various extensions proposed to address different issues -
+		higher bit rate, QoS support, security
+	\item Tech gained popularity because of low deployment and maintenance
+		cost, as well as relatively high bitrate
+	\item IEEE 802.11 - 1997
+	\begin{itemize}
+		\item supports data rates up to 2Mbps, initially developed for
+			best effort traffic only
+		\item Each host connects to an IEEE802.11 access point
+		\item Wireless medium shared with other nodes associated with
+			same AP point
+		\item Contention for medium access which determines increased
+			collision rates and consequently lower data rates
+			especially when num of mobile hosts involved in
+			sumultaneous data comms increases
+		\item IEEE 802.11 MAC layer provides mech. for medium access
+			coordination:
+		\begin{itemize}
+			\item Distributed Coordination Function (DCF) -
+				distributed
+			\item Point coordination Function (PCF) - partly
+				centralised
+		\end{itemize}
+	\end{itemize}
+	\item IEEE 802.11b
+	\begin{itemize}
+		\item Increased max data rate to 11Mbps, operating in 2.4 GHz
+			freq. band
+	\end{itemize}
+	\item IEEE 802.11g
+	\begin{itemize}
+		\item Increase max. data rates to 54Mbps
+	\end{itemize}
+	\item IEEE 802.11a
+	\begin{itemize}
+		\item Data rates up to 54Mbps operating in 5GHz freq. band
+	\end{itemize}
+	\item IEEE 802.11e
+	\begin{itemize}
+		\item QoS extesion provided by two new mechanisms
+		\begin{itemize}
+			\item Hybrid Coordination Function (HCF) - PCF extension
+			\item Enhanced Distributed Coordination Function (EDCF)
+				- DCF extension
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsubsection{Other 802.11 extensions}
+\begin{itemize}
+	\item IEEE 802.11n
+	\begin{itemize}
+		\item Higher bitrates up to 600Mbps
+		\item QoS support similar with 802.11e
+	\end{itemize}
+	\item IEEE 802.11p
+	\begin{itemize}
+		\item Wireless comms in vehicular environments
+		\item Short to medium range comms at high data transfer rates
+	\end{itemize}
+	\item IEEE 802.11ac VHT
+	\begin{itemize}
+		\item Offers data rates up to 1Gbps for low velocity mobile
+			hosts
+	\end{itemize}
+\end{itemize}
+\subsection{WiFi IEEE 802.11 Issues}
+\subsubsection{Hidden Station Problem}
+\begin{itemize}
+	\item Consider that station B has TX range indicated by left oval, C by
+		right oval. Any station in these ranges can hear TX from B and C
+		respectively
+	\item Station C, outside TX range of B cannot hear B, likewise B cannot
+		hear C. Station A in range of both. Assuming B TX to A, C cannot
+		hear B, believes medium is free, also TX data to A. Neither TX
+		successful
+	\item RST and CTS frames introduced to solve this problem. Before
+		sending, B sends RTS to A (includes duration of TX). A hears RTS
+		and replies with CTS which also includes TX duration info. As C
+		is in range of A it gets CTS msg, learns of hidden station will
+		be using channel, refrains from TX.
+\end{itemize}
+\subsection{WiFi IEEE 802.11e}
+\subsubsection{QoS Support}
+\begin{itemize}
+	\item Access Class (AC)
+	\begin{itemize}
+		\item AC\_VO (Voice), AC\_VI (video), AC\_BE (best effort) and
+			AC\_BK (Background)
+	\end{itemize}
+	\item Transmission Opportunity (TxOP)
+	\begin{itemize}
+		\item Time duration dring which station is allowed Tx turst of
+			data frames
+	\end{itemize}
+	\item Arbitration Interframe Space (AIFS[AC])
+	\begin{itemize}
+		\item Period of time a wireless node has to wait before alloewd
+			TX next frame
+		\item Dependent on access class
+	\end{itemize}
+	\item Contention Window (CWmin, CWmax)
+	\begin{itemize}
+		\item Deoendent on access class
+	\end{itemize}
+\end{itemize}
+\subsection{WPAN}
+\subsubsection{IEEE 802.15}
+\begin{itemize}
+	\item Bluetooth
+	\begin{itemize}
+		\item Interconnects various protale devices and their
+			accessories
+		\item 2.4GHz band
+		\item Data rates of up to 1Mbps (BT v1.0) and up to 3Mbps (v2.0)
+		\item Future rates expected to be between 53Mbps and 480Mbos
+		\item IEEE802.15.1 based on BT v1.1
+	\end{itemize}
+	\item IEEE 802.15.4
+	\begin{itemize}
+		\item Low-range, low-power wireless network comms
+		\item Based on this standard, Zigbee protocol defines the
+			network layer specialized on ad-hoc networking and the
+			application layer targeting wireless sensor networks as
+			well as other monitoring and control applications
+		\item IEEE 802.15.4/Zigbee offers data rates up to 250 Kbps in
+			the 2.4GHz band
+	\end{itemize}
+	\item Ultra-Wideband (UWB)
+	\begin{itemize}
+		\item WiMedia Alliance defined UWB wireless comms tech
+			sipporting wide range of data rates from 53Mbps to
+			480Mbps over short range using low power transceivers
+		\item PHY/MAC protocols developed by WiMedia became ECMA 368
+			standard and later on ISO/OEC 26907
+	\end{itemize}
+	\item Wibree
+	\begin{itemize}
+		\item Ultra-low power wireless net. comms tech
+		\item Ranges up to 10m and data rates of 1Mbps
+	\end{itemize}
+\end{itemize}
+\end{document}

@@ -1,0 +1,993 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[dutch]{babel}
+\usepackage{amsmath, amssymb}
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\section{Performance at Transport Layer}
+\subsection{TCP}
+Characteristics
+\begin{itemize}
+	\item Connection-oriented reliable byte-stream service
+	\begin{itemize}
+		\item Two comms end points must establish, maintain connection
+		\item Byte stream data exchanged between end points
+		\item Reliable data delivery ensured
+	\end{itemize}
+\end{itemize}
+\subsubsection{Principles}
+\begin{itemize}
+	\item Data broken into segments of certain size
+	\begin{itemize}
+		\item Max. Segment Size (MSS) set (negotiated) at conn. estab.
+		\item MSS val carried by SYN segment
+		\item End point never TX segment larger than MSS
+		\item Higher MSS, better performance (min. OH vs payload ratio)
+		\item If not indicated, default val of 536 bytes is used for MSS
+		\item In reality, seg size 40 byteslarger as also includes
+			\begin{itemize}
+				\item 20 bytes TCO header
+				\item 20 bytes IP header
+			\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsubsection{Problem}
+\begin{itemize}
+	\item Data broken into segments of certain size
+	\begin{itemize}
+		\item COmpute efficiency considering OH and payload when TX 4GB
+			video and MSS of 1460and 536 used:
+		\begin{itemize}
+			\item Case 1: No pkts: $4*\frac{1024}{1460}=2873;
+				Headers: 40*2873=114920$
+			\begin{itemize}
+				\item Efficiency = useful data/total data =
+					$\frac{4194304}{4309224}=97.33\%$
+			\end{itemize}
+			\item Case 2: No pkts: $4*\frac{1024}{536}=7826;
+				Headers: 40*7826=313040$
+			\begin{itemize}
+				\item Efficiency=useful data/total data=
+					$\frac{419304}{4507344}=93.05\% $
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsubsection{Principles}
+\begin{itemize}
+	\item Reliability through ack and reTX
+	\item When TX seg, timer set
+	\item RX expected to ack seg
+	\item If ack not RX, seg is reTX
+\end{itemize}
+\subsubsection{Issues}
+\begin{itemize}
+	\item ReTX TimeOut (RTO) period is variable
+	\begin{itemize}
+		\item RTO set in relation to RTT
+		\item RTT estimated using smoothed estimator (SRTT) using a
+			low-pass filter
+		\item After unsuccessful reTX, TO period doubled (exponential
+			backoff) with an upper limit
+	\end{itemize}
+	\item Adter series of unsuccessful reTX, conn. is reset
+	\begin{itemize}
+		\item TCP implementation have Keepalive timer, not present in
+			TCP standard
+	\end{itemize}
+\end{itemize}
+\subsubsection{Problem}
+\begin{itemize}
+	\item Exponential backoff reTX
+	\begin{enumerate}
+		\item List times at which reTX occurs if there is a need for 6
+			reTX and the first two are 2s apart
+		\begin{itemize}
+			\item ReTX: 1,3,7,15,31,63
+		\end{itemize}
+		\item List times at which reTX occur if there is need for 10
+			reTX and the first two are 1.5s apart
+		\begin{itemize}
+			\item ReTX:
+				1,2.5,6.5,11.5,23.5,47.5,96.5,159.5,223.5,287.5
+		\end{itemize}
+	\end{enumerate}
+\end{itemize}
+\subsubsection{RTT Estimation}
+\begin{itemize}
+	\item Calculated every time new measurement performed
+	\item $STT = \alpha * SRTT+(1-\alpha)*MRTT$, where
+	\begin{itemize}
+		\item SRTT is RTT estimator
+		\item $\alpha$ is smoothing factor with rec. val between 0.8 and
+			0.9
+		\item MRTT is measured RTT
+	\end{itemize}
+\end{itemize}
+\subsubsection{RTO Value}
+\begin{itemize}
+	\item Calculated every time there is need for reTX
+	\item $RTO = min (RTOMax, max(RTOMin,(\beta * SRTT)))$, where
+	 \begin{itemize}
+		\item RTOMax is upper bound on timeout (e.g. 1m, 64sec)
+		\item RTOMin is lower bound on timeout (e.g. 1s)
+		\item $\beta$ is delay variance factor with dixed val between
+			1.3 and 2
+		\item If ack not RX, seg is reTX
+	\end{itemize}
+\end{itemize}
+\subsubsection{ISsues}
+\begin{itemize}
+	\item RTT estimation accuracy problem
+	\begin{itemize}
+		\item RTT estimation alg assumes RTT variations are small,
+			constant
+		\item Loses accuracy with wide fluctuations in RTT, causing
+			unnecessary reTX
+		\item ReTX add traffic to already loaded net.
+	\end{itemize}
+	\item Jacobson's soln.
+	\begin{itemize}
+		\item Keep track of both mean and variance of RTT, compute RTO
+			based on both
+	\end{itemize}
+\end{itemize}
+\subsubsection{RTT Average and Mean Deviation}
+\begin{itemize}
+	\item Calc every time new measurement performed
+	\item $Err = MRTT - ARTT$
+	\begin{itemize}
+		\item Err is error between measured val and smothered value for
+			RTT
+		\item ARTT is smothered RTT average
+		\item g is gain factor with rec. value of 1/8
+		\item MRTT is measured RTT
+	\end{itemize}
+\end{itemize}
+\subsubsection{RTT MEan Deviation}
+\begin{itemize}
+	\item Calc. every time new measurement performed
+	\item $DRTT = DRTT*h*(|Err|-DRTT)$
+	\begin{itemize}
+		\item DRTT is smothered mean deviation
+		\item h is difference factor set to 0.25
+	\end{itemize}
+\end{itemize}
+\subsubsection{RTO value}
+\begin{itemize}
+	\item Calc. every time need for reTX
+	\item $RTO = ARTT+r*DRTT$, where
+	\begin{itemize}
+		\item r is constant set to 4
+		\item Initial val set for r was 2, later changed to 4
+	\end{itemize}
+\end{itemize}
+\subsubsection{Issues}
+\begin{itemize}
+	\item RTT measurement accuracy problem
+	\begin{itemize}
+	 	\item RTT measured between sending of data pkt and its ack
+		\item When Large delays occur, timer goes off, reTX takes place
+		\item When RX ack, no way to know if it was delayed res. to orig data
+			seg or res. to reTX seg
+	\end{itemize}
+	\item Karn's soln
+	\begin{itemize}
+		\item Not to update RTT estimator with info on reTX seg's
+			performance
+	\end{itemize}
+	\item Limitations of Karn;s soln
+	\begin{itemize}
+		\item When RTT increases sharply, normal reTX resumed after
+			series of reTX and TCP does to receive ack, for a while
+			RTT not updated, reTX would happen considering old RTT
+			val
+	\end{itemize}
+	\item Limitations soln
+	\begin{itemize}
+		\item Exponential backoff timer timout val employed:
+			timout=2*timout
+	\end{itemize}
+	\item Solution isse
+		\begin{itemize}
+			\item If to increases too much, delays added with no
+				correlation with actual net. delay
+		\end{itemize}
+	\item Solution fix
+	\begin{itemize}
+		\item Upper limitations added to to value > 1 min: 64s
+	\end{itemize}
+\end{itemize}
+\subsubsection{Computation of RTT estimation}
+\subsection{Congestion control}
+\begin{itemize}
+	\item Modern TCP std include 4 major alg
+	\begin{itemize}
+		\item Slow start
+		\item COngestion avoidance
+		\item Fast reTX
+		\item Fast recovery
+	\end{itemize}
+\end{itemize}
+\subsection{Slow Start}
+\subsubsection{Principle}
+\begin{itemize}
+	\item Slowly probes net in order to determine available capacity
+	\item Employed at beginning of transfer/after loss detected by TX timer
+	\item Uses following var.
+		\begin{itemize}
+			\item COngestion window (cwnd) - sender side limit on
+				amount which can be TX before receiving ack
+			\item Receiver window (rwnd) - Receiver-side limit on
+				outstanding data
+			\item Slow start threshold (ssthresh) - limit to decide
+				using slow start or congestion avoidance
+			\item Sender Maximum Segment Size (SMSS) - Max seg size
+				at sender
+			\item Flight Size - amount of unack data in TX between
+				sender, receiver
+		\end{itemize}
+	\item TX should exchange min of cwnd and rwnd amount of data
+	\item Slow start used when cwnd > ssthresh, Congestion Avoidance
+		emploued for cwnd < ssthresh and either alg when cwnd = ssthresh
+\end{itemize}
+\subsubsection{MEchanism}
+\begin{itemize}
+	\item
+	\item
+	\item
+	\item
+	\item
+\end{itemize}
+\subsubsection{Note}
+\begin{itemize}
+	\item
+\end{itemize}
+\subsubsection{Problem: ACK Division}
+\begin{itemize}
+	\item `
+	\item
+	\item
+\end{itemize}
+\subsubsection{UPdated Mechanism}
+\begin{itemize}
+	\item
+	\item
+	\item
+\end{itemize}
+\subsubsection{Performance Issues}
+\begin{itemize}
+	\item
+	\begin{itemize}
+		\item
+		\begin{itemize}
+			\item
+		\end{itemize}
+	\end{itemize}
+	\item
+	\begin{itemize}
+		\item
+		\begin{itemize}
+			\item
+		\end{itemize}
+		\item
+		\begin{itemize}
+			\item
+		\end{itemize}
+	\end{itemize}
+	\item
+	\begin{itemize}
+		\item
+		\begin{itemize}
+			\item
+		\end{itemize}
+		\item
+		\begin{itemize}
+			\item
+		\end{itemize}
+		\item
+		\begin{itemize}
+			\item
+			\item
+			\item
+			\item
+			\item
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsection{Congestion Avoidance}
+\subsubsection{Principle}
+\subsubsection{Mechanism}
+\subsubsection{Updated MEchanism}
+\subsubsection{Note}
+\subsection{Fast Retransmit}
+\subsubsection{Principle}
+\subsubsection{Mechanism}
+\subsection{Fast Recovery}
+\subsubsection{Principle}
+\subsubsection{Mechanism}
+\subsubsection{Note}
+\subsection{Fast Retransmit and Fast Recovery}
+\subsubsection{PRinciple}
+\begin{itemize}
+	\item Two major alg types that improve Fast reTX and Fast recovery
+	\item Based on TCP selective Ack
+	\begin{itemize}
+		\item
+	\end{itemize}
+
+\end{itemize}
+\section{TCP Tahoe}
+\subsection{Characteristics}
+\begin{itemize}
+	\item Fast recovery not included
+	\item Fast reTX not included
+	\item TXP old tahoe did not have fast reTX either
+	\item Implemented in Unix 4.3 BSD Tahoe
+\end{itemize}
+\subsection{ISsues}
+\begin{itemize}
+	\item ONly mechanism to detect loss is through reTX timer timeout
+	\begin{itemize}
+		\item Introduces potential delays
+	\end{itemize}
+	\item TCP old tahoe by not emplying dast reTX alg, slow start has to be
+		used
+	\begin{itemize}
+		\item Rates kept low
+	\end{itemize}
+	\item Every lost pkt determines cwnd reste to min
+	\begin{itemize}
+		\item Severe reduction in rates
+	\end{itemize}
+\end{itemize}
+\section{TCP Reno}
+\subsection{Characteristics}
+\subsection{Issues}
+\section{TCP NEw Reno, SACK and Vegas}
+\subsection{TCP New Reno}
+\subsubsection{Characteristics}
+\subsubsection{ISsues}
+\subsection{TCP SACK}
+\subsubsection{Characteristics}
+\subsubsection{Issues}
+\subsection{TCP Vegas}
+\subsubsection{Characteristics}
+\subsubsection{Issues}
+\section{SCTP}
+\subsection{Motivation}
+\begin{itemize}
+	\item TCP limitations with wireless and mobile comms
+	\item Need for multi-streaming
+	\item Need for multi-homing
+\end{itemize}
+\subsection{OVerview}
+\begin{itemize}
+	\item Series of IETF 2960 (2000), IETF RFC 3286 (2002)
+\end{itemize}
+\subsection{Features}
+\begin{itemize}
+	\item Reliable transport protocol
+	\item Uses association instead of conn.
+	\item Designed for message oriented applications
+		\begin{itemize}
+			\item Framing (preserve message boundaries)
+		\end{itemize}
+	\item Ack error free transfer of msg
+	\item Detection of data corruption, data loss and data duplication
+	\item Selective reTX to corect lost or corrupted data
+	\item Active monitoring of session conn. via heartbeat
+	\item Resistance to DOS attacks
+	\begin{itemize}
+		\item 4-way handshake
+	\end{itemize}
+	\item Supports multi-streaming
+	\begin{itemize}
+		\item Up to 64K indp. ordered streams
+	\end{itemize}
+	\item Supports multi-homing
+	\begin{itemize}
+		\item Set of IP addresses per endpoint
+	\end{itemize}
+\end{itemize}
+\subsection{Message Format - 1:HEader}
+\begin{itemize}
+	\item Src Port and Dest Port (2+2 bytes)
+	\begin{itemize}
+		\item Same port concept as TCP and UDP
+	\end{itemize}
+	\item Verification Tag (4 bytes)
+	\begin{itemize}
+		\item Exchanged etween endpoints at startup to validate the
+			sender
+	\end{itemize}
+\item Checksum (4 bytes)
+	\begin{itemize}
+		\item Uses CRC32 alg
+	\end{itemize}
+\end{itemize}
+\subsection{MEssage Format - 2: Chuncks}
+\begin{itemize}
+	\item Type (1 byte)
+	\begin{itemize}
+		\item Control or Data: e.g. Data, Init, SACK
+	\end{itemize}
+\item Flags (1 byte)
+	\begin{itemize}
+		\item Carry info depending on type
+	\end{itemize}
+\item Length (2 bytes)
+	\begin{itemize}
+		\item Chunk length, including data payload length
+	\end{itemize}
+\item Data (N bytes)
+	\begin{itemize}
+		\item Variable length payload
+	\end{itemize}
+\end{itemize}
+\subsection{Message Format - 3: Important Chunk Types}
+\begin{itemize}
+	\item DATA
+	\begin{itemize}
+		\item IDs chunks carrying data
+	\end{itemize}
+	\item INIT, INIT-ACK, COOKIE-ECHO, COOKIE-ACK
+	\begin{itemize}
+		\item USedfor association establishment
+	\end{itemize}
+	\item HEARTBEAT, HEARTBEAT-ACK
+	\begin{itemize}
+		\item Used for keep-alive chacking
+	\end{itemize}
+	\item SHUTDOWN, SHUTDOWN-ACK
+	\begin{itemize}
+		\item USed for graceful disconn.
+	\end{itemize}
+\end{itemize}
+\subsection{Establishing an Association}
+Association Establishment Procedure
+\begin{itemize}
+	\item
+\end{itemize}
+\subsection{INIT Chunk}
+\begin{itemize}
+	\item Initiate Tag
+	\begin{itemize}
+		\item Receiver stores Initiate Tag Value
+		\item Must be placed in VErification Tag field of every SCTP pkt
+			receiver sends
+	\end{itemize}
+\item Advertised Receiver Window Credit (a\_rwnd)
+	\begin{itemize}
+		\item Indicates dedicated buffer space sender reserved for this
+			association
+	\end{itemize}
+\item Number of Outbound Streams (OS)
+	\begin{itemize}
+		\item Number of outbound streams sender wishes to create in this
+			association (max 64k)
+	\end{itemize}
+\item Number of Inbound Streams (I-TSN)
+	\begin{itemize}
+		\item Defines initial TX seq number the sender will use
+		\item Field may be set to value of Initiate Tag Field
+	\end{itemize}
+	\item
+	\begin{itemize}
+		\item
+	\end{itemize}
+\end{itemize}
+\subsection{INIT-ACK Chunk}
+\subsection{C\OKIE ECHO and C\OKIE ACK Chunks}
+\subsection{DATA Chunk}
+\subsection{Terminating an Association}
+\subsection{SHUTDOWN Chunks}
+\subsection{Multihoming}
+SCTP Association:
+\begin{itemize}
+	\item Comm. hosts use set of IP addr. instead of single one each
+	\item Multi comms path may be set up
+	\begin{itemize}
+		\item One primary path
+		\item No. of secondary paths
+	\end{itemize}
+	\item Lists of IP addrs exchanged between hosts during init of assoc.
+	\begin{itemize}
+		\item Both INIT and INITACK msgs include list of IP addrs
+	\end{itemize}
+	\item Source of INIT msg is dest of INIT-ACK
+	\begin{itemize}
+		\item In general, determine primary path
+	\end{itemize}
+\end{itemize}
+SCTP Operation:
+\begin{itemize}
+	\item HOsts monitor data TOs and No. of reTX to determine path's
+		transmission quality
+	\item ReTX Data chunks may be sent over multipaths if status of one path
+		is suspect
+	\item Faulty paths marked ``Out of Service''
+	\item HEartbeat chunks sent periodically to all inactive IP addr
+	\item Non-responding IP addrs will be marked ``Out of Service''
+\end{itemize}
+\section{mSCTP}
+Mobile SCTP
+\begin{itemize}
+	\item Extends SCTP
+	\begin{itemize}
+		\item Adds Dynamic Address Reconfiguration (ADDIP)
+		\item Enables SCTO to add, delete, and change existing IP addrs
+			attached to an assoc. during an acrive conn.
+		\item Enables support for seamless handover for mobile hosts
+			that are moving between IP networks
+		\item Uses ASCONF and ASCONF-ACK
+		\begin{itemize}
+			\item Add new IP addrs to assoc
+			\item Change primary IP of assoc
+			\item Delete old IP addr from assoc
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\section{DCCP}
+Motivation
+\begin{itemize}
+	\item UPD and TCP limitations with realtime transport of data
+	\item Need to support real-time data transfers over wireless links
+\end{itemize}
+Overview
+\begin{itemize}
+	\item DCCP is novel non-reliable transport layer protocol
+	\item
+	\item
+\end{itemize}
+Features
+\begin{itemize}
+	\item
+\end{itemize}
+Datagram Format 1:
+\begin{itemize}
+	\item Headers - Long Sequence No.
+\end{itemize}
+Datagram Format 2:
+\begin{itemize}
+	\item Headers - Short seq no.
+	\item Acknowledgements - Short seq no.
+	\item Options and Data
+\end{itemize}
+Datagram Fields
+\begin{itemize}
+	\item
+\end{itemize}
+Packet Types
+\begin{itemize}
+	\item
+\end{itemize}
+Connection Setup
+\begin{itemize}
+	\item 3-way handshake
+\end{itemize}
+Data exchange
+\begin{itemize}
+	\item Two endpoints exchange Data pkts and ack pkts acking data
+	\item Optionally DataAck pkts containing data and acks can be exchanged
+	\item If one endpoint has no data to send it will send ack pkts
+		exclusively
+\end{itemize}
+Connection Close
+\begin{itemize}
+	\item 3-way handshake
+\end{itemize}
+\section{Congestion Control-Related Schemes}
+Drop Tail
+\begin{itemize}
+	\item Involves default queue mechanisms
+	\item Drops all pkts exceeding queue length
+	\begin{itemize}
+		\item Any TCP-based receiver reports loss in ACK pkt
+		\item Most often sender adapts to loss by multiplicatively
+			decreasing
+	\end{itemize}
+	\item One loss event is very likely to be dollowed by series of loss
+		events
+	\begin{itemize}
+		\item Little or no space in queue
+	\end{itemize}
+	\item If adaptive senders need some time to respond
+\end{itemize}
+Random Early Detection (RED)
+\begin{itemize}
+	\item Uses active queue management
+	\item Drops pkt in intermediate node based on av. queue legnth exceeding
+		a thresh
+	\begin{itemize}
+		\item Any TCP receiver reports loss in ACK pkt
+		\item Most often sender adapts to loss by multiplicatively
+			decreating rate
+	\end{itemize}
+	\item RED experiences mostly singular loss events
+	\item Gives time to adaptive senders to respond
+\end{itemize}
+Early Congestion Notifications
+\begin{itemize}
+	\item End-End congestion avoidance mechanism
+	\begin{itemize}
+		\item Implementedin routers and supported by end-systems
+		\item Not multimedia-specific, very TCP-specific
+	\end{itemize}
+	\item Uses two IP header bits
+	\begin{itemize}
+		\item ECT - ECN Capable Transport, set by sender
+		\item CE - COngestion Experienced, may be set by routers
+	\end{itemize}
+	\item If pkt has ECT bit 0,
+	\begin{itemize}
+		\item ECN acts as RED
+	\end{itemize}
+	\item If pkt has ECT bit 1:
+	\begin{itemize}
+		\item ECN node sets CE bit
+		\item Any TCP receiver sets ECN bit in ACK
+		\item As result most often sender applies multi decrease
+	\end{itemize}
+	\item EXN-pkts never lost on un-congested links
+	\item Distinction between loss and marked pkts
+	\begin{itemize}
+		\item TX window can decrease
+		\item No pkt loss and no reTX
+	\end{itemize}
+\end{itemize}
+Early Congestion Notification (ECN) Nonce
+\begin{itemize}
+	\item Optional addition to ECN
+	\item Improvies robustness of congestion control
+	\item Prevents receivers from ecploiting ECN to gain unfair share of
+		net. BW
+	\item Protects against accisdental/malicious concealment of marked pkts
+		from sender
+\end{itemize}
+eXplicit Congestion Notiication (XCN)
+\begin{itemize}
+	\item Protocol for Connections with high BW-delay product
+	\item Routers return explicit feedback to host
+	\item Hosts use feedback from routers to change their congestion window
+\end{itemize}
+\section{TCP over Wireless}
+Motivation
+\begin{itemize}
+	\item LArge percentage of traffic is reliable:
+	\begin{itemize}
+		\item File Trandfer (FTP)
+		\item Web Traffic (HTTP)
+		\item Command Based (TELNET, SSH)
+	\end{itemize}
+	\item TCP very popular in wired networks
+	\begin{itemize}
+		\item Very good congestion control
+		\item Very good congestion avoidanve
+	\end{itemize}
+\end{itemize}
+TCP in Wireless Networks
+\begin{itemize}
+	\item Pkt loss in wireless networks occurs due to:
+	\begin{itemize}
+		\item Bit errors due to wireless channel impairments
+		\item Handovers due to mobility
+		\item Congestion (rarely)
+		\item Pkt reordering (rarely)
+	\end{itemize}
+	\item TCP assumes pkt loss is due to:
+	\begin{itemize}
+		\item COngestion in the net.
+		\item Pkt reordering (rarely)
+	\end{itemize}
+\end{itemize}
+Problems with TCP over Wireless NEtworks
+\begin{itemize}
+	\item Congestion avoidance can be triggered by pkt loss
+	\begin{itemize}
+		\item TCPs mechanisms do not respond well to pkt loss due to bit
+			errors and handoffs
+		\item Efficiency of TCP-based transfers suffer
+	\end{itemize}
+	\item Error bursts may occur due to low signal stregth or longer period
+		of noise
+	\begin{itemize}
+		\item More than one pkt lost in TCP
+		\item More likely to be detected as TO -> TCP enters slow start
+	\end{itemize}
+	\item Delay is often very high and variable
+	\begin{itemize}
+		\item RTT can be very long and variable
+		\item TCPs TO mechanisms may not work well
+		\item Problem exacerbated by link-level reTX
+	\end{itemize}
+	\item Links may be asymmetric
+	\begin{itemize}
+		\item Delayed ACKs in slow dirn. limit throughput in fast dirn
+	\end{itemize}
+\end{itemize}
+Solutions for TCP over Wireless Networks
+\begin{itemize}
+	\item Link-Layer approaches (A)
+	\begin{itemize}
+		\item Hide losses not caused by congestion from the
+			transport-layer sender
+		\item Makes link appear to be more reliable than it is in
+			reality
+		\item Solns:
+		\begin{itemize}
+			\item Use frame reTX
+			\begin{itemize}
+				\item Link-level automatic reTX request (ARQ)
+			\end{itemize}
+			\item USe error correction codes
+				\begin{itemize}
+					\item Forward Error Correciton (FEC)
+				\end{itemize}
+			\item Use hybrid solutions
+			\begin{itemize}
+				\item ARQ and FEC
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	\item Advantages
+	\begin{itemize}
+		\item Requires no change to existing sender behaviour
+		\item Matches layered protocol stack model
+	\end{itemize}
+	\item Disadvantages
+	\begin{itemize}
+		\item Negative TCP effect:
+		\begin{itemize}
+			\item Delays due to link-level TO and reTX may trigger
+				TCP fast reTX
+			\item TX efficiency decreases
+		\end{itemize}
+		\item Soln to negative TCP effect
+		\begin{itemize}
+			\item Make link-level protocol TCP-aware
+		\end{itemize}
+	\end{itemize}
+	\item Example: Snoop TCP
+	\begin{itemize}
+		\item Advantages
+		\begin{itemize}
+			\item Attempts to reTX locally, suppress duplicate ack
+			\item State is soft, handoff simplified
+		\end{itemize}
+		\item Disadvantege
+		\begin{itemize}
+			\item May not completely shield TCP from effects of
+				mobility and wireless loss
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+Split Connection Approaches (B)
+\begin{itemize}
+	\item Divide single TCO conn. into two conn.
+	\item Isolate wired net. from wireless net
+	\item OFten split at base station or access point
+	\item soln
+	\begin{itemize}
+		\item Use TCP on wired net
+		\item Enhanced protocol over wireless net
+	\end{itemize}
+	\item Advantages
+		\begin{itemize}
+			\item Clarity of approach
+			\item Each of the protocols performs best in its setup
+		\end{itemize}
+	\item Disadvantages
+	\begin{itemize}
+		\item Extra protocol OH
+		\item Violates end-end semantics of TCP
+		\item Complicates handoff due to state info at access point or
+			base station where protocol is ``split''
+	\end{itemize}
+	\item Example
+	\begin{itemize}
+		\item Indirect TCP
+	\end{itemize}
+\end{itemize}
+End-to-End Approaches (C)
+\begin{itemize}
+	\item Make sender aware that some losses are not due to congestion
+	\item Avoid congestion control when not needed
+	\item Solns
+	\begin{itemize}
+		\item Selective ack (SACKs)
+		\item Explicit loss notificaiton (ELN) distinguishes between
+			congestion and other losses
+	\end{itemize}
+	\item Advantages
+	\begin{itemize}
+		\item Maintains end-end semantics of TCP
+		\item Intros no extra OH at base stations for protocol
+			processing or handoff
+	\end{itemize}
+	\item Disadvantages
+	\begin{itemize}
+		\item Requires modified TCP
+		\item May not operate efficiently e.g. for pkt reordering versus
+			pkt loss
+	\end{itemize}
+	\item Example
+	\begin{itemize}
+		\item SMART
+	\end{itemize}
+\end{itemize}
+\section{Snoop TCP}
+OVerview
+\begin{itemize}
+	\item Link-layer protocol that snoops passing TCP data and acks
+	\item Employs Snoop agent between two endpoints
+	\item Data from Fixed Host to Mobile Host
+	\begin{itemize}
+		\item Cache unack'd TCP data
+		\item Perform local reTX
+	\end{itemize}
+	\item Data from Mobile Host to Fixed Host
+	\begin{itemize}
+		\item Detect missing pkts
+		\item Perform negative ack
+	\end{itemize}
+\end{itemize}
+Architecture
+\begin{itemize}
+	\item
+\end{itemize}
+Fixed Host to Mobile Host Operation
+\begin{itemize}
+	\item If new pt rec. in normal TCP seq
+	\begin{itemize}
+		\item Add to snoop cache
+		\item Forward to Mobile Host
+	\end{itemize}
+	\item If out of seq pkt cached earlier arrives
+	\begin{itemize}
+		\item Fast reTX/TO at send due to:
+		\item if last\_ACK < crt\_seq\_no
+		\begin{itemize}
+			\item Loss in wireless link - Forward to Mobile Host
+		\end{itemize}
+		\item if last\_ACK > crt\_seq\_no
+		\begin{itemize}
+			\item Loss of previous ACK - send ACK to Fixed Host with
+				Mobile Host addr and port
+		\end{itemize}
+	\end{itemize}
+	\item If out of seq pkt not cached earlier arrives
+	\begin{itemize}
+		\item if seq\_no far from last\_seq\_no
+		\begin{itemize}
+			\item Congestion in fixed network
+			\begin{itemize}
+				\item Forward to Mobile Host
+				\item Mark as reTX by sender
+			\end{itemize}
+		\end{itemize}
+		\item if seq\_no close to last\_seq\_no
+		\begin{itemize}
+			\item Out of order delivery
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+Mobile Host to Fixed Host Operation
+\begin{itemize}
+	\item If new ack rec. in normal TCP operation
+	\begin{itemize}
+		\item Normal Case
+		\begin{itemize}
+			\item Clean snoop cache
+			\item Update RT estimate
+			\item Forward ack to Fixed Host
+		\end{itemize}
+	\end{itemize}
+	\item if spurious ack rec.
+	\begin{itemize}
+		\item Discard
+	\end{itemize}
+	\item If duplicate ack rec.
+	\begin{itemize}
+		\item If pkt not in snoop cache
+		\begin{itemize}
+			\item Lost in fixed net.
+			\begin{itemize}
+				\item Forwared to fixed host
+			\end{itemize}
+		\end{itemize}
+		\item If pkt marked as sender reTX
+		\begin{itemize}
+			\item Forward to Fixed Host
+		\end{itemize}
+		\item If unexpected (first after a pkt loss)
+		\begin{itemize}
+			\item Lost pjt on wireless link
+			\begin{itemize}
+				\item ReTX ar higher priority
+			\end{itemize}
+		\end{itemize}
+		\item If expected (subsequent adter one lost)
+		\begin{itemize}
+			\item Discard
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+Advantages
+\begin{itemize}
+	\item Improved performance in wireless net.
+	\item No change to TCP at fixed host
+	\item No violaiton of end-end TCP semantics
+	\item No recompiling/re-linking of existing applications
+	\item Automatic fallback to standard TCP
+	\begin{itemize}
+		\item No need to ensure all foreign net. provide Snoop agent
+	\end{itemize}
+\end{itemize}
+Disadvantages
+\begin{itemize}
+	\item Does not fully isolate wireless link errors from the fixed net.
+	\item Mobile host must be modified to handle NACKs for reverse traffic
+	\item Cannot snoop encrypted datagrams
+	\item Cannot be used with authentication
+\end{itemize}
+\section{Indirect TCP (I-TCP)}
+Overview
+\begin{itemize}
+	\item Hides pkt loss due to wireless from sender
+	\item Wireless TCP can be independently optimized
+	\item Good performance in case of wide-area net.
+	\item reTX occurs only on bad link
+	\item Faster recovery due to relativelty shortRTT for wireless link
+	\item Handoff requires state transfer
+	\item Buffer space needed, extra copying at proxy
+	\item End-end semantics violation needs to be augmented by apllication
+		level
+\end{itemize}
+Architecture
+\begin{itemize}
+	\item
+\end{itemize}
+Advantages
+\begin{itemize}
+	\item No changes to TCP at fixed hosts
+	\item Wireless link errors are corrected at the TCP proxy and do not
+		propagate to the fixed net.
+	\item New ``wireless'' protocol affects only limited part of internet
+	\item Possible further optimizaitons over wireless link
+	\item Delay variane between proxy and mobile host is small -> optimised
+		TCP
+	\item Opportunity for header compression
+	\item Opportunity for different transport protocol
+\end{itemize}
+Disadvantages
+\begin{itemize}
+	\item Loss of TCPs end-end semantics
+	\item Addition of third point of failure (proxy) apart from fixed,
+		mobile hosts
+	\item Handover can be significant
+	\item OH at proxy for per pkt processing
+	\item TCP proxy must be trusted
+	\item Opportunities for snooping and DOS attacks
+	\item End-end IP-level privacy and auth. must terminate at proxy
+	\item Proxy failure may cause loss of TCP state
+\end{itemize}
+\section{Other Approaches}
+\end{document}
