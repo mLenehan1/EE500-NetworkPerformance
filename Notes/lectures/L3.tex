@@ -1,26 +1,3 @@
-\documentclass[a4paper]{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{textcomp}
-\usepackage[dutch]{babel}
-\usepackage{amsmath, amssymb}
-
-
-% figure support
-\usepackage{import}
-\usepackage{xifthen}
-\pdfminorversion=7
-\usepackage{pdfpages}
-\usepackage{transparent}
-\newcommand{\incfig}[1]{%
-	\def\svgwidth{\columnwidth}
-	\import{./figures/}{#1.pdf_tex}
-}
-
-\pdfsuppresswarningpagegroup=1
-
-\begin{document}
 \section{Introduction}
 \subsection{Current Environment}
 \begin{itemize}
@@ -165,8 +142,8 @@
 		\begin{itemize}
 			\item Little impact on txt/picture web browsing
 		\end{itemize}
-		\item Data rate \amp required b.w. $<30.5kbps$
-		\item Expected loss rate \amp error rate 0 since HTTP is
+		\item Data rate \& required b.w. $<30.5kbps$
+		\item Expected loss rate \& error rate 0 since HTTP is
 			reliable
 		\begin{itemize}
 			\item Error reTX
@@ -210,7 +187,7 @@
 	\end{itemize}
 	\item Performance figures summarised for specified periods of time
 \end{itemize}
-\subsubection{QoS Percieved by Customer}
+\subsubsection{QoS Percieved by Customer}
 \begin{itemize}
 	\item Statement expressing level of quality exp.
 	\item Perceived QoS - Degrees of Satisfaction, not in tech. terms
@@ -327,9 +304,9 @@
 		\item Delay:
 		\begin{itemize}
 			\item t taken for pkt to tracel from host to another
-			\item $RT Delay = Forward Transport delay + Server delay
-				+ backward transport delay$
-			\item Forward transport delay often \neq backward
+			\item $RT Delay = Forward Transport delay + Server delay +
+				backward transport delay$
+			\item Forward transport delay often $\neq$ backward
 				transport dfelay
 			\item Ping still most commonly used to measure latency
 			\item Delay changes as conditions on net. vary
@@ -364,4 +341,3 @@
 		\end{itemize}
 	\end{itemize}
 \end{itemize}
-\end{document}
