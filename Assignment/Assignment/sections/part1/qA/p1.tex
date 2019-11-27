@@ -1,0 +1,38 @@
+\subsubsection{Part 1:}
+
+Within the wifi-example-sim.cc file, the simulation is given a run time of 20
+seconds, a packet size of 1000 bytes and a 0.05 second delay between the
+transmission of packets. This corresponds to a total of 400 packets sent over
+the space of 20 seconds.
+
+\begin{gather*}
+	R=\frac{rxPackets*packetSize*8}{txTime} \\
+	\frac{400*1000*8}{20} \\
+	\frac{3,200,000}{20} \\
+	1,600,000 \\
+	1,600Kbps
+\end{gather*}
+\captionof{equation}{Bitrate of Data Traffic (Kbps)}
+
+\begin{gather*}
+	test
+\end{gather*}
+\captionof{equation}{Average Throughput (Kbps)}
+
+\par Delay time is given within the wifi-example-sim.cc file as measured in
+nanoseconds. Form the output, this value is 490381ns. This can be calculated as
+follows:
+\begin{gather*}
+	\overline{delay}=\frac{delaySum}{rxPackets} \\
+	\frac{196,152,732}{400} \\
+	= \quad 490,381.83ns \\
+	= \quad 4.9\times10^{-4}s
+\end{gather*}
+\captionof{equation}{Average Delay (s)}
+
+\begin{gather*}
+	PLR = \frac{lostPackets}{rxPackets+lostPackets0} \\
+	\frac{0}{400+0} \\
+	= \quad 0
+\end{gather*}
+\captionof{equation}{Average Packet Loss Ratio}

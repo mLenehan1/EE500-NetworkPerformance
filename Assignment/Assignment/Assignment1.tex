@@ -1,0 +1,67 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{textcomp}
+\usepackage[UKenglish]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{
+	aboveskip=4pt,
+	belowskip=12pt
+}
+\DeclareCaptionType{equation}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+	colorlinks=false
+}
+\usepackage[style=ieee]{biblatex}
+\bibliography{sources/biblio}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\input{cover/cover}
+\hypersetup{pageanchor=true}
+\pagenumbering{alph}
+\input{cover/declaration}
+\input{sections/abstract}
+\pagenumbering{arabic}
+\tableofcontents
+\clearpage
+\section{Introduction}
+\input{sections/introduction}
+\section{Part 1: Data Transmission over the WiFi Network}
+\subsection{Question A:}
+\input{sections/part1/qA/p1}
+\input{sections/part1/qA/p2}
+\subsection{Question B:}
+\input{sections/part1/qB/qB}
+\subsection{Question C:}
+\input{sections/part1/qC/p1}
+\input{sections/part1/qC/p2}
+\input{sections/part1/qC/p3}
+\section{Part 2: Results and Comparison and Analysis}
+\input{sections/part2/p2}
+\section{Conclusion}
+\input{sections/conclusion}
+\clearpage
+\printbibliography
+\end{document}
