@@ -1,5 +1,46 @@
 \subsubsection{Part 2:}
 
+Within the wifi-example-sim.cc file, the transmission bitrate can be modified in
+one of two ways. By modifying the size of the packets being transmit, or by
+modifying the delay between packet transmissions. This is shown in the following
+calculations:
+
+\begin{gather*}
+	R=\frac{rxPackets\times packetSize \times 8}{txTime} \\
+	\begin{align*}
+		\frac{R\times txTime}{packetSize \times 8} &= rxPackets &
+		\undeline{or}& & \frac{R \times txTime}{rxPackets
+	\times 8} &= packetSize \\
+	\end{align*} \\
+	rxPackets=\frac{txTime}{delay}
+\end{gather*}
+\captionof{equation}{Calculation for Bitrate Modification}
+
+The following table shows the number of packets to be sent (modified by the
+delay between packet transmissions), or the size of packet to be sent in order
+to meet the required data rates.
+
+\begin{table}[H]
+	\centering
+	\caption{Bitrate Calculation Results}
+	\label{tab:brcalc}
+	\begin{tabular}{|c|c|c|c|}
+	\hline
+	Bitrate & rxPackets & Delay & packetSize \\
+	\hline
+	1Mbps & 2,500 & $8\times 10^{-3}$ & 625 \\
+	1Mbps & 3,750 & $5.3\times 10^{-3}$ & 937.5 \\
+	5Mbps & 12,500 & $1.6\times 10^{-3}$ & 3125 \\
+	10Mbps & 25,000 & $8\times 10^{-4}$ & 6250 \\
+	20Mbps & 50,000 & $4\times 10^{-4}$ & 12,500 \\
+	\hline
+	\end{tabular}
+\end{table}
+
+For the purposes of this section, the delay between the packet transmissions
+will be modified. Modifying packet sizes requires using half bytes for packet
+sizes.
+
 \begin{gather*}
 	test
 \end{gather*}
