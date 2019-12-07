@@ -1,0 +1,161 @@
+\section{Network Applications}
+
+\subsection{Multi-programming}
+
+Uniprogramming:
+\begin{itemize}
+	\item Originally only 1 usr program on computer at a time
+\end{itemize}
+
+Multi-Programming
+\begin{itemize}
+	\item More user programs run on same computer at same time
+\end{itemize}
+
+Process:
+\begin{itemize}
+	\item Running program along with all resources that its code can affect
+\end{itemize}
+
+PRocess Context:
+\begin{itemize}
+	\item Represent the process state
+	\item Includes code, variables, open files, memory contents, stack, etc.
+\end{itemize}
+
+\subsection{Multi-Tasking}
+
+Multi-programming problem
+\begin{itemize}
+	\item Computer has limited no. of CPUs
+	\item Many user programs running sim. need CPU time
+\end{itemize}
+
+Muti-programming solution:
+\begin{itemize}
+	\item Multi taskingL illusion of concurrecy (parallel execution)
+\end{itemize}
+
+Multi-Tasking:
+\begin{itemize}
+	\item SW approach to achieve parallel processing
+	\item Dast switching CPUamong different processe
+	\item At any given time one process only running on one CPU
+	\item All processes seem to run in paprallel
+\end{itemize}
+
+\subsection{PRocesses}
+
+Process States:
+\begin{itemize}
+	\item A process may be in one of three states:
+\end{itemize}
+
+Running:
+\begin{itemize}
+	\item Using the CPU
+\end{itemize}
+
+Blocked
+\begin{itemize}
+	\item Unable to run until some external event happens (CPU could be
+		free)
+\end{itemize}
+
+Ready (Runnable)
+\begin{itemize}
+	\item Temp stopped to let other process run on CPU
+\end{itemize}
+
+Process Transitions
+\begin{enumerate}
+	\item Occurs when a process cannot continue as it is waiting for
+		external event
+	\item Caused by process scheduler when it decides to stop temp the
+		execution of current process and give another chance to run
+	\item Caused by process scheduler when it decides to give a ready
+		process the chance to run
+	\item Occurs when the external event the blocked process was waiting
+		for happens
+\end{enumerate}
+
+\subsection{Scheduling Algorithms}
+
+\begin{itemize}
+	\item Determing when to stop one process/give CPU time to another
+	\item Get involved when 1+ process in READY state and sys must decide
+		whihc to run first
+	\item Could be voluntary ("Non-pre-emptive scheduling") or forced
+		("Pre-emptive scheduling")
+	\item Pre-emptive scheduling can be performed according to different
+		policies
+	\begin{itemize}
+		\item Priority scheduling
+		\item First-come First-served
+		\item Shortest job first
+		\item Shortest remaining job first
+		\item Round-robin
+	\end{itemize}
+\end{itemize}
+
+\subsection{Threads}
+
+\begin{itemize}
+	\item A sequence of a program that erforms certain task and exec within
+		a process
+	\item Has its own stack
+	\item Shares memory and data with other threads within the same process
+	\item Properties:
+	\begin{itemize}
+		\item Can have different priorities
+		\item Can run in preemptce mode (OS interrupts thread execution
+			at regular intervals to give execution time to other
+			threads)
+		\item Cooperative mode (thread can control CPU for as long as it
+			needs)
+	\end{itemize}
+\end{itemize}
+
+\subsection{Multi-Threading}
+
+\begin{itemize}
+	\item Provides another level of parallelism for task execution, with
+		less overhead
+	\item Enables different tasks to be performed in parallel using common
+		data and resources
+	\item Thread context switching is less complex and faster than process
+		context swithcing
+	\item Process consists of many threads each running at same time within
+		process context, performing unique tasks
+	\item Suggestions
+	\begin{itemize}
+		\item Thread which manages time-critical tasks should be given
+			high priority than other threads
+		\item GUI and various data processing should be allocated
+			different threads
+		\item No of threads should be kept to minimum, not overload sys
+	\end{itemize}
+\end{itemize}
+
+\subsection{Inter-Thread Communications}
+
+\begin{itemize}
+	\item Focuses on exchanging data between different threads
+	\item As mostly performed using common data variables (share processes
+		data space)
+	\item As more than one thread executing in parallel may access and
+		modify the data, the results may be unpredictible
+	\item Solution:
+	\begin{itemize}
+		\item Only 1 thread allowed to modify data at a time (inter
+			thread sync)
+		\item Mechanisms to enable inter-thread comms include:
+		\begin{itemize}
+			\item Shared memory
+			\item Semaphores
+			\item Message passing
+			\item Signals
+			\item Named pipes
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
