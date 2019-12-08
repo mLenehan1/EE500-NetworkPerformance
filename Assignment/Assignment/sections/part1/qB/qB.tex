@@ -1,6 +1,11 @@
 This section investigates the effect of distance on throughput, delay and loss
 within a single user, single access point system.
 
+\par The throughput, shown below, is constant for the user from distances
+between 0 and 110 meters from the access point. Packet loss occurs at
+approximately 120 meters, giving greatly decreased throughput. Between 130 and
+150 meters, there are no packets received, giving a throughput of 0Kbps.
+
 \begin{gather*}
 	Throughput=\frac{rxPackets*1000*8}{txTime} \\
 	TP_{0-110}=\frac{400*1000*8}{20}\\
@@ -12,6 +17,9 @@ within a single user, single access point system.
 \end{gather*}
 \captionof{equation}{Average Throughput (Kbps) over distances of 0-150m}
 
+The drop of in the throughput is clearly visible within the plot of Figure
+\ref{fig:QBthroughput}.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/EE500/QB/Images/wifi-throughput}
@@ -19,6 +27,9 @@ within a single user, single access point system.
 	\label{fig:QBthroughput}
 \end{figure}
 
+The delay, whose values are shown below as read from the database file, begins
+to increase at a faster rate between 80 and 110 meters, with much greater
+increases between 110 and 120 meters.
 \begin{gather*}
 	\overline{delay}_0=271582ns \\
 	\overline{delay}_{10}=271615ns \\
@@ -45,6 +56,15 @@ delay value. These values can be seen in Figure \ref{fig:QBdelay}
 	\caption{Delay as measured at distances between 0 and 150 meters}
 	\label{fig:QBdelay}
 \end{figure}
+
+For distances between 0 and 110 meters, there is no packet loss due to, as discussed
+earlier, all of the packets transmit by the access point are received by the
+user.
+
+\par For a distance of 120 meters, the user experiences loss of 96.75\%, and for
+distances greater than this, experiences loss of 100\%.
+
+\par The calculations for the packet loss ratio can be seen below:
 
 \begin{gather*}
 	PLR=\frac{lostPackets}{rxPackets+lostPackets} \\

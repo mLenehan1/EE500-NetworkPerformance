@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{mathptmx}
 \usepackage{textcomp}
+\usepackage{multirow}
 \usepackage[UKenglish]{babel}
 \usepackage{xcolor}
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -34,7 +35,7 @@
 \bibliography{sources/biblio}
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{1em}
+\setlength{\parskip}{2em}
 
 % figure support
 \usepackage{import}
@@ -58,9 +59,11 @@
 \pagenumbering{arabic}
 \tableofcontents
 \clearpage
-\section{Introduction}
-\input{sections/introduction}
 \section{Part 1: Data Transmission over the WiFi Network}
+Part 1 of this assignment involves modifying the provided
+``wifi-example-sim.cc'' file in order to execute simulations with multiple input
+parameters, such as different bitrates, distances between nodes, and number of
+nodes.
 \subsection{Question A:}
 \input{sections/part1/qA/p1}
 \input{sections/part1/qA/p2}
@@ -72,8 +75,6 @@
 \input{sections/part1/qC/p3}
 \section{Part 2: Results and Comparison and Analysis}
 \input{sections/part2/p2}
-\section{Conclusion}
-\input{sections/conclusion}
 \clearpage
 \section{Appendix}
 \input{sections/Appendix/appendix.tex}

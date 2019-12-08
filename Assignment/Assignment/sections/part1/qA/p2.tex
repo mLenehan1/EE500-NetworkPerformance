@@ -37,9 +37,15 @@ to meet the required data rates.
 	\end{tabular}
 \end{table}
 
-For the purposes of this section, the delay between the packet transmissions
+\par For the purposes of this section, the delay between the packet transmissions
 will be modified. Modifying packet sizes requires using half bytes for packet
-sizes.
+sizes. The modification within the code can be seen within the following
+snippet of the wifi-example-sim.cc file found in the Appendices.
+
+\begin{lstlisting}[language=C++, caption=Transmission Interval Code Snippet]
+	sender[i]->SetAttribute("Interval", StringValue
+	("ns3::ConstantRandomVariable[Constant=" + txInterval + "]"));
+\end{lstlisting}
 
 \par The following equations show the throughput, delay, and packet loss ratio
 for the systems with the above bitrates.
@@ -57,12 +63,12 @@ for the systems with the above bitrates.
 	TP_{4\times10^{-4}}=\frac{34368*1000*8}{20} \\
 	= 13747.2Kbps
 \end{gather*}
-\captionof{equation}{Average Throughput (Kbps}
+\captionof{equation}{Average Throughput (Kbps)}
 
 \par From these calculations, it can be seen that a maximum throughput of
 13.7Mbps was achieved. Loss begins to occur at approximately 10Mbps, limiting
 the throughput. The throughput can be seen plotted against the increasing
-transmission intervals in Figure \ref{fig:QAP2Throughput}
+transmission intervals in Figure \ref{fig:QAP2Throughput}.
 
 \begin{figure}[H]
 	\centering

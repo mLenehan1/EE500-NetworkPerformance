@@ -1,0 +1,178 @@
+Each section of this assignment deals with three of the main performance
+characteristics of a network, namely throughput, delay, and loss. These values
+are affected by the number of users in the network, the distance between the
+nodes in the network, and the bitrate. Question A deals with the differences in
+bitrates, Question B with the differences in distances, and Question C Part 2
+with the number of users in the network.
+
+\subsection{Throughput}
+
+For Question A Part 1, there is a throughput value of 1.6Kbps. This network has
+a single user (sink) node, and a single access point (source) node. The bitrate
+is determined in this case by the 0.05 second transmission interval.
+
+\par Question A Part 2 investigates the throughput due to different bitrates.
+With a bitrate of 1Mbps, there is a throughput of 1Mbps. A 1.5Mbps bitrate
+corresponds to a 1.5Mbps throughput, a 5Mbps bitrate to a 5Mbps throughput, and
+a 10Mbps bitrate to an approximately 10Mbps throughput. At a bitrate of 20Mbps
+however, there is a throughput of only 13.7Mbps, due to the loss of packets.
+
+\par Question B investigates the throughput due to different distances, using
+the initial setup from Question A Part 1. At distances between 0 and 110 meters,
+there is a throughput of 160Kbps. At 120 meters, due to lost packets, there is a
+throughput of 5.2Kbps, and between 130 and 150 meters, no packets are received
+at the sink node, giving a throughput of 0Kbps.
+
+\par Question C Part 2 investigates the throughput with an increased number of
+users within the network. For 1 to 10 sink nodes, there is no effect on the
+throughput, giving a value of 1Mbps. With 20 and 50 sink nodes, there is a small
+drop in throughput, with a value of 0.98992Mbps.
+
+\begin{table}[H]
+	\centering
+	\caption{Throughput Values for QA Part 1 and 2, QB, and QC Part 2}
+	\label{tab:P2TP}
+	\begin{tabular}{|c|c|}
+		\hline
+		\multicolumn{2}{|c|}{Throughput (Kbps)} \\
+		\hline
+		QA Part 1 & 160 \\
+		QA P2_{1Mbps} & 1000\\
+		QA P2_{1.5Mbps} & 1500\\
+		QA P2_{5Mbps} & 5000\\
+		QA P2_{10Mbps} & 9999\\
+		QA P2_{20Mbps} & 13747\\
+		QB_{0-110m} & 160\\
+		QB_{120} & 5.2\\
+		QB_{130-150} & 0\\
+		QC_{1-10Users} & 1000 \\
+		QC_{20-50Users} & 989.92 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+This table shows that attempting to increase the throughput by increasing the
+bitrate will only work to a certain point, at which packet loss will begin to
+occur, causing the throughput to drop below the defined bitrate.
+
+\par The table also shows that distance between nodes has a much greater affect
+on the throughput than the number of users within the network.
+
+\subsection{Delay}
+
+For Question A Part 1, the single source, single sink network has a delay
+value of 0.49ms.
+
+\par Question A Part 2 investigates the delay due to different bitrates.
+With a bitrate of 1Mbps, there is a delay of 0.44ms. A 1.5Mbps bitrate
+corresponds to a delay of 0.43ms, a 5Mbps bitrate to a delay of 0.438ms, and
+a 10Mbps bitrate to a delay of 0.497ms. At a bitrate of 20Mbps
+however, due to packet loss, there is a delay of 229ms.
+
+\par Question B investigates the delay due to different distances, using
+the initial setup from Question A Part 1. The delay steadily increases for
+distances between 0 and 70 meters, from 0.27ms to 0.65ms. At 80 meters there
+is a steeper increase, to a delay of 0.84ms. Following this there is again a
+steady increase to a delay of 1.72ms at 110 meters, with a final spike to 9.3ms
+visible at 120 meters. Following 120 meters there is no delay, as no packets are
+being received.
+
+\par Question C Part 2 investigates the delay with an increased number of
+users within the network. For a single user, the delay is 0.44ms. With 5 users,
+this delay increases to 2.8ms. With 10 users, the delay increases to 8.4ms. With
+20 users there is a delay of 227.9ms, and finally, with 50 users there is a
+delay of 1530.5ms.
+
+\begin{table}[H]
+	\centering
+	\caption{Delay Values for QA Part 1 and 2, QB, and QC Part 2}
+	\label{tab:P2Delay}
+	\begin{tabular}{|c|c|}
+		\hline
+		\multicolumn{2}{|c|}{Delay (ms)} \\
+		\hline
+		QA Part 1 & 0.44 \\
+		QA P2_{1Mbps} & 0.44\\
+		QA P2_{1.5Mbps} & 0.43\\
+		QA P2_{5Mbps} & 0.43\\
+		QA P2_{10Mbps} & 0.49\\
+		QA P2_{20Mbps} & 229\\
+		QB & Refer to Equation 10 \\
+		QB & MaxDelay = 9.36 \\
+		QC_{1User} & 0.44\\
+		QC_{5User} & 2.8\\
+		QC_{10User} & 8.4\\
+		QC_{20User} & 227.9\\
+		QC_{50User} & 1530.5\\
+		\hline
+	\end{tabular}
+\end{table}
+
+This table shows that distance between nodes has a much less of an affect
+on the delay than the number of users within the network. This is converse to
+the throughput, which was affected more by the distance.
+
+\par With 50 users, the delay is approximately 160 times greater than the
+maximum delay within Question B in which the distance was being increased.
+
+\subsection{Loss}
+
+For Question A Part 1, the single source, single sink network has a Packet Loss
+Ratio (PLR) of 0\% as no packets are lost.
+
+\par Question A Part 2 investigates the PLR due to different bitrates.
+No packet loss occurs for bitrates between 1 and 5Mbps, giving a PLR of 0\%. At
+10Mbps there are 3 lost packets, giving a PLR of $1.2\time10^{-5}$\%. A bitrate
+of 20Mbps corresponds to a 30\% PLR.
+
+\par Question B investigates the loss due to different distances, using
+the initial setup from Question A Part 1. For distances between 0 and 110 meters
+no packet loss occurs giving a PLR of 0\%. At 120 meters, there is a PLR of
+96.75\%, due to 387 of 400 packets being lost. Between 130 and 150 meters, no
+packets were received, giving a PLR of 100\%.
+
+\par Question C Part 2 investigates the loss with an increased number of
+users within the network. For 1, 5, and 10 Sinks, there are no lost packets,
+giving a PLR of 0\%. For 20 and 50 sinks, there is a packet loss ratio of
+1.08\%.
+
+\begin{table}[H]
+	\centering
+	\caption{Packet Loss Ratio Values for QA Part 1 and 2, QB, and QC Part 2}
+	\label{tab:P2PLR}
+	\begin{tabular}{|c|c|}
+		\hline
+		\multicolumn{2}{|c|}{Packet Loss (\%)} \\
+		\hline
+		QA Part 1 & 0 \\
+		QA P2_{1Mbps} & 0\\
+		QA P2_{1.5Mbps} & 0\\
+		QA P2_{5Mbps} & 0\\
+		QA P2_{10Mbps} & $1.2\times10^{-5}$\\
+		QA P2_{20Mbps} & 30.7\\
+		QB_{0-110m} & 0\\
+		QB_{120} & 96.75\\
+		QB_{130-150} & 100\\
+		QC_{1-10Users} & 0 \\
+		QC_{20-50Users} & 1.08 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Similarly to Table \ref{tab:P2TP}, the loss is affected much more by the
+distance between the nodes than by the number of nodes. Much higher loss is
+experienced at larger distances than with larger numbers of nodes in the
+network.
+
+\subsection{Conclusion}
+
+From the previous comparisons, it can be seen that both throughput and loss are
+affected more by distance than by the numbers of users in the system, whereas
+delay is affected much more by the number of users than by the distance to the
+source node.
+
+As such, if throughput and loss mitigation are more important characteristics in
+the network, then users (sink nodes) should be kept within close proximity of
+the source node, at a maximum distance of 120 meters. If delay is the more
+important characteristic, then the number of sink nodes should be limited, as
+over 10 users tends to dramatically increase the delay within the system.

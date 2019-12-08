@@ -1,3 +1,8 @@
+This section assess the initial simulation implementation, with a single user, a
+data rate of approximately 1.6Kbps, and a distance of 50 meters between the user
+and the access point. The bitrate is then modified to assess its affect on the
+system.
+
 \subsubsection{Part 1:}
 
 Within the wifi-example-sim.cc file, the simulation is given a run time of 20
@@ -17,10 +22,12 @@ the space of 20 seconds.
 	\frac{400*1000*8}{20} \\
 	\frac{3,200,000}{20} \\
 	160,000 \\
-	1.6Kbps
+	160Kbps
 \end{gather*}
 \captionof{equation}{Average Throughput (Kbps)}
 
+The throughput value from the equation above can be seen plot against the users
+distance from the access point in Figure \ref{fig:QAthroughput} (plot in Mbps).
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/EE500/QA/P1/Images/wifi-throughput}
@@ -54,6 +61,9 @@ Packet loss ratio is given by the following formula:
 	= \quad 0
 \end{gather*}
 \captionof{equation}{Average Packet Loss Ratio}
+
+As seen in both the equation above, and in Figure \ref{fig:QALoss}, there is no
+packet loss within this simulation.
 
 \begin{figure}[H]
 	\centering
