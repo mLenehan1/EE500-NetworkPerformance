@@ -1,26 +1,60 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {UKenglish}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1}Introduction}{2}{section.1}% 
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Part 1: Data Transmission over the WiFi Network}{2}{section.2}% 
+\contentsline {section}{\numberline {2}Part 1: Data Transmission over the WiFi Network}{3}{section.2}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Question A:}{2}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.1}Question A:}{3}{subsection.2.1}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.1}Part 1:}{2}{subsubsection.2.1.1}% 
+\contentsline {subsubsection}{\numberline {2.1.1}Part 1:}{3}{subsubsection.2.1.1}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.2}Part 2:}{3}{subsubsection.2.1.2}% 
+\contentsline {subsubsection}{\numberline {2.1.2}Part 2:}{6}{subsubsection.2.1.2}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}Question B:}{4}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.2}Question B:}{10}{subsection.2.2}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Question C:}{4}{subsection.2.3}% 
+\contentsline {subsection}{\numberline {2.3}Question C:}{13}{subsection.2.3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.3.1}Part 1:}{4}{subsubsection.2.3.1}% 
+\contentsline {subsubsection}{\numberline {2.3.1}Part 1:}{13}{subsubsection.2.3.1}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.3.2}Part 2:}{4}{subsubsection.2.3.2}% 
+\contentsline {subsubsection}{\numberline {2.3.2}Part 2:}{16}{subsubsection.2.3.2}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.3.3}Part 3:}{4}{subsubsection.2.3.3}% 
+\contentsline {subsubsection}{\numberline {2.3.3}Part 3:}{19}{subsubsection.2.3.3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Part 2: Results and Comparison and Analysis}{4}{section.3}% 
+\contentsline {section}{\numberline {3}Part 2: Results and Comparison and Analysis}{21}{section.3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Conclusion}{4}{section.4}% 
+\contentsline {section}{\numberline {4}Conclusion}{21}{section.4}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {5}Appendix}{22}{section.5}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.1}Bash Scripts}{22}{subsection.5.1}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.1.1}Question A Part 1 Bash Script}{22}{subsubsection.5.1.1}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.1.2}Question A Part 2 Bash Script}{24}{subsubsection.5.1.2}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.1.3}Question B Bash Script}{26}{subsubsection.5.1.3}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.1.4}Question C Part 1 Bash Script}{28}{subsubsection.5.1.4}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.1.5}Question C Part 2 Bash Script}{30}{subsubsection.5.1.5}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.1.6}Question C Part 3 Bash Script}{32}{subsubsection.5.1.6}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.2}C++ Files}{35}{subsection.5.2}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.2.1}C++ Simulation File}{35}{subsubsection.5.2.1}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.3}Gnuplot Files}{44}{subsection.5.3}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.1}Question A Part 1 Bash Script}{44}{subsubsection.5.3.1}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.2}Question A Part 2 Bash Script}{45}{subsubsection.5.3.2}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.3}Question B Bash Script}{46}{subsubsection.5.3.3}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.4}Question C Part 1 Bash Script}{46}{subsubsection.5.3.4}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.5}Question C Part 2 Bash Script}{47}{subsubsection.5.3.5}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.6}Question C Part 3 Bash Script}{48}{subsubsection.5.3.6}% 

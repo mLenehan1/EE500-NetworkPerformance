@@ -1,0 +1,66 @@
+This section investigates the effect of distance on throughput, delay and loss
+within a single user, single access point system.
+
+\begin{gather*}
+	Throughput=\frac{rxPackets*1000*8}{txTime} \\
+	TP_{0-110}=\frac{400*1000*8}{20}\\
+	= 160Kbps\\
+	TP_{120}= \frac{13*1000*8}{20}\\
+	= 5.2Kbps \\
+	TP_{130-150}=\frac{0*1000*8}{20}\\
+	= 0Kbps
+\end{gather*}
+\captionof{equation}{Average Throughput (Kbps) over distances of 0-150m}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/EE500/QB/Images/wifi-throughput}
+	\caption{Throughput as measured at distances between 0 and 150 meters}
+	\label{fig:QBthroughput}
+\end{figure}
+
+\begin{gather*}
+	\overline{delay}_0=271582ns \\
+	\overline{delay}_{10}=271615ns \\
+	\overline{delay}_{20}=271648ns \\
+	\overline{delay}_{30}=397353ns \\
+	\overline{delay}_{40}=381876ns \\
+	\overline{delay}_{50}=490381ns \\
+	\overline{delay}_{60}=605123ns \\
+	\overline{delay}_{70}=649954ns \\
+	\overline{delay}_{80}=835599ns \\
+	\overline{delay}_{90}=1279691ns \\
+	\overline{delay}_{100}=1574269ns \\
+	\overline{delay}_{110}=1723305ns \\
+	\overline{delay}_{120}=9362323ns \\
+\end{gather*}
+\captionof{equation}{Average Delay (ns) over distances of 0-150m}
+
+Beyond a distance of 120m, due to there being a throughput of 0Kbps, there is no
+delay value. These values can be seen in Figure \ref{fig:QBdelay}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/EE500/QB/Images/wifi-delay}
+	\caption{Delay as measured at distances between 0 and 150 meters}
+	\label{fig:QBdelay}
+\end{figure}
+
+\begin{gather*}
+	PLR=\frac{lostPackets}{rxPackets+lostPackets} \\
+	TP_{0-110}=\frac{0}{400+0}\\
+	= 0 \\
+	TP_{120}= \frac{387}{13+387}\\
+	= 0.9675 \\
+	TP_{130-150}=\frac{400}{0+400}\\
+	= 1
+\end{gather*}
+\captionof{equation}{Packet Loss Ratio over distances of 0-150m}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/EE500/QB/Images/wifi-loss}
+	\caption{Packet Loss Ratio as measured at distances between 0 and 150
+	meters}
+	\label{fig:QBloss}
+\end{figure}

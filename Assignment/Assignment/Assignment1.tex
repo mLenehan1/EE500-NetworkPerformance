@@ -5,6 +5,19 @@
 \usepackage{mathptmx}
 \usepackage{textcomp}
 \usepackage[UKenglish]{babel}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	stringstyle=\color{codepurple},
+	showspaces=false,
+	showstringspaces=false,
+	breaklines=true
+}
+\lstset{style=mystyle}
 \usepackage{amsmath, amssymb}
 \usepackage{float}
 \usepackage{caption}
@@ -42,7 +55,6 @@
 \hypersetup{pageanchor=true}
 \pagenumbering{alph}
 \input{cover/declaration}
-\input{sections/abstract}
 \pagenumbering{arabic}
 \tableofcontents
 \clearpage
@@ -62,6 +74,9 @@
 \input{sections/part2/p2}
 \section{Conclusion}
 \input{sections/conclusion}
+\clearpage
+\section{Appendix}
+\input{sections/Appendix/appendix.tex}
 \clearpage
 \printbibliography
 \end{document}

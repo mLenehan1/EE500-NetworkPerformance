@@ -6,18 +6,27 @@ transmission of packets. This corresponds to a total of 400 packets sent over
 the space of 20 seconds.
 
 \begin{gather*}
-	R=\frac{rxPackets*packetSize*8}{txTime} \\
-	\frac{400*1000*8}{20} \\
-	\frac{3,200,000}{20} \\
-	1,600,000 \\
-	1,600Kbps
+	R=\frac{rxPackets*packetSize*8}{delay} \\
+	\frac{400*1000*8}{4.9\times10^{-4}} \\
+	6.53\times10^{9}bits
 \end{gather*}
 \captionof{equation}{Bitrate of Data Traffic (Kbps)}
 
 \begin{gather*}
-	test
+	Throughput=\frac{rxPackets*packetSize*8}{txTime} \\
+	\frac{400*1000*8}{20} \\
+	\frac{3,200,000}{20} \\
+	160,000 \\
+	1.6Kbps
 \end{gather*}
 \captionof{equation}{Average Throughput (Kbps)}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/EE500/QA/P1/Images/wifi-throughput}
+	\caption{Throughput for a single user at a distance of 50 meters}
+	\label{fig:QAthroughput}
+\end{figure}
 
 \par Delay time is given within the wifi-example-sim.cc file as measured in
 nanoseconds. Form the output, this value is 490381ns. This can be calculated as
@@ -30,6 +39,14 @@ follows:
 \end{gather*}
 \captionof{equation}{Average Delay (s)}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/EE500/QA/P1/Images/wifi-Delay}
+	\caption{Delay for a single user at a distance of 50 meters}
+	\label{fig:QAdelay}
+\end{figure}
+
+
 Packet loss ratio is given by the following formula:
 \begin{gather*}
 	PLR = \frac{lostPackets}{rxPackets+lostPackets0} \\
@@ -37,3 +54,10 @@ Packet loss ratio is given by the following formula:
 	= \quad 0
 \end{gather*}
 \captionof{equation}{Average Packet Loss Ratio}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/EE500/QA/P1/Images/wifi-loss}
+	\caption{Packet Loss Ratio for a single user at a distance of 50 meters}
+	\label{fig:QALoss}
+\end{figure}
